@@ -410,9 +410,76 @@
     .cmp-you-win  { background:rgba(63,185,80,.1);  border:1px solid rgba(63,185,80,.3);  color:var(--green); }
     .cmp-they-win { background:rgba(248,81,73,.1);  border:1px solid rgba(248,81,73,.3);  color:var(--red); }
     .cmp-tie      { background:rgba(139,148,158,.1); border:1px solid var(--border); color:var(--muted); }
+
+    /* ── JOURNAL NOTE ── */
+    .note-wrap { margin-bottom:8px; }
+    .note-input { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:7px 10px; border-radius:6px; font-size:11px; font-family:inherit; resize:none; height:50px; outline:none; transition:border-color .15s; box-sizing:border-box; }
+    .note-input:focus { border-color:var(--blue); }
+    .note-input::placeholder { color:var(--muted); }
+    .note-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:4px; }
+
+    /* ── REVEAL CARD ── */
+    .reveal-card { background:rgba(227,179,65,.06); border:1px solid rgba(227,179,65,.2); border-radius:7px; padding:9px 12px; font-size:11px; color:var(--text); margin-top:8px; display:none; }
+    .reveal-card.show { display:block; }
+    .reveal-card-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--yellow); margin-bottom:5px; }
+    .reveal-card-row { display:flex; justify-content:space-between; padding:1px 0; }
+    .reveal-card-label { color:var(--muted); }
+    .reveal-card-val { font-weight:600; }
+
+    /* ── PATTERN CARD ── */
+    .pattern-card { background:rgba(88,166,255,.06); border:1px solid rgba(88,166,255,.2); border-radius:7px; padding:9px 12px; font-size:11px; color:var(--text); margin-top:6px; display:none; }
+    .pattern-card.show { display:block; }
+    .pattern-card-title { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--blue); margin-bottom:4px; }
+    .pattern-name { font-size:13px; font-weight:800; margin-bottom:3px; }
+    .pattern-desc { color:var(--muted); line-height:1.5; }
+
+    /* ── ACHIEVEMENT TOAST ── */
+    .ach-toast { position:fixed; bottom:28px; right:22px; background:var(--surface); border:1px solid rgba(227,179,65,.4); border-radius:11px; padding:12px 16px; display:flex; align-items:center; gap:11px; box-shadow:0 6px 28px rgba(0,0,0,.6); z-index:3000; transform:translateY(120px); opacity:0; transition:all .38s cubic-bezier(.17,.67,.35,1.08); max-width:270px; pointer-events:none; }
+    .ach-toast.show { transform:translateY(0); opacity:1; }
+    .ach-toast-icon { font-size:26px; flex-shrink:0; }
+    .ach-toast-body { flex:1; min-width:0; }
+    .ach-toast-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--yellow); margin-bottom:2px; }
+    .ach-toast-title { font-size:12px; font-weight:800; color:var(--text); }
+    .ach-toast-sub   { font-size:10px; color:var(--muted); margin-top:1px; }
+
+    /* ── BADGE GRID ── */
+    .badge-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .badge-item { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 6px; text-align:center; }
+    .badge-item.unlocked { border-color:rgba(227,179,65,.45); background:rgba(227,179,65,.07); }
+    .badge-item.locked   { opacity:.4; filter:grayscale(1); }
+    .badge-icon { font-size:22px; margin-bottom:3px; }
+    .badge-name { font-size:9px; font-weight:700; color:var(--muted); line-height:1.3; }
+    .badge-item.unlocked .badge-name { color:var(--text); }
+
+    /* ── DAILY CHALLENGE ── */
+    .btn-daily { padding:4px 10px; border-radius:5px; border:1px solid rgba(227,179,65,.35); background:rgba(227,179,65,.08); color:var(--yellow); font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; }
+    .btn-daily:hover { background:rgba(227,179,65,.2); border-color:var(--yellow); }
+    .daily-modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; width:560px; max-width:100%; max-height:92vh; overflow:hidden; display:flex; flex-direction:column; }
+    .daily-header { padding:18px 22px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .daily-body { overflow-y:auto; flex:1; padding:18px 22px; display:flex; flex-direction:column; gap:10px; }
+    .daily-lb-row { display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:7px; }
+    .daily-lb-row.you { border-color:rgba(88,166,255,.35); background:rgba(88,166,255,.05); }
+    .daily-lb-rank { width:26px; text-align:center; font-weight:900; font-size:14px; color:var(--muted); flex-shrink:0; }
+    .daily-lb-name { flex:1; font-size:12px; font-weight:600; }
+    .daily-lb-pct  { font-size:14px; font-weight:800; font-variant-numeric:tabular-nums; }
+
+    /* ── PSYCH PATTERNS ── */
+    .psych-card { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:11px 14px; }
+    .psych-head { display:flex; align-items:center; gap:7px; margin-bottom:4px; font-size:12px; font-weight:700; }
+    .psych-body { font-size:11px; color:var(--muted); line-height:1.6; }
   </style>
 </head>
 <body>
+
+<!-- ACHIEVEMENT TOAST -->
+<div class="ach-toast" id="ach-toast">
+  <div class="ach-toast-icon" id="ach-toast-icon">🏆</div>
+  <div class="ach-toast-body">
+    <div class="ach-toast-label">Achievement Unlocked!</div>
+    <div class="ach-toast-title" id="ach-toast-title"></div>
+    <div class="ach-toast-sub"   id="ach-toast-sub"></div>
+  </div>
+</div>
 
 <!-- AUTH OVERLAY -->
 <div class="auth-overlay" id="auth-overlay">
@@ -466,6 +533,22 @@
   <div class="cmp-modal" id="comparison-content"></div>
 </div>
 
+<!-- DAILY CHALLENGE MODAL -->
+<div class="milestone-overlay" id="daily-modal" style="display:none;">
+  <div class="daily-modal">
+    <div class="daily-header">
+      <div>
+        <div style="font-size:16px;font-weight:800;">📅 Daily Challenge</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Same chart for everyone — today's leaderboard</div>
+      </div>
+      <button class="an-close" onclick="document.getElementById('daily-modal').style.display='none'">✕ Close</button>
+    </div>
+    <div class="daily-body" id="daily-body">
+      <div class="overlay-inner"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header>
   <div class="logo"><div class="logo-icon">📈</div>TradeSim</div>
@@ -484,6 +567,7 @@
   <div id="style-badge-wrap" style="display:none;"><div class="style-badge" id="style-badge">—</div></div>
   <button class="btn btn-style" id="change-style-btn" onclick="showStylePicker()" style="display:none;">Change Style</button>
   <button class="btn btn-new"   id="new-btn"          onclick="startRound()"     style="display:none;">▶ New Round</button>
+  <button class="btn-daily"    id="daily-btn"        onclick="showDailyChallenge()" style="display:none;">📅 Daily Chart</button>
 </div>
 
 <!-- TOOLBAR -->
@@ -539,6 +623,10 @@
         <div class="tpsl-row"><span class="tpsl-lbl sl">SL</span><input class="tpsl-input" id="sl-input" type="number" placeholder="Price…" step="any" oninput="onTPSLInput()"><span class="tpsl-pct" id="sl-pct-el"></span></div>
       </div>
       <div class="rr-row" id="rr-row" style="display:none;"><span>Risk / Reward</span><span class="rr-val" id="rr-val">—</span></div>
+      <div class="note-wrap">
+        <div class="note-label">Pre-Trade Note</div>
+        <textarea class="note-input" id="note-input" placeholder="What's your thesis? (optional)"></textarea>
+      </div>
       <div class="warn-msg" id="warn-msg"></div>
       <div class="trade-grid">
         <button class="btn btn-long"  id="long-btn"  onclick="placeTrade('long')"  disabled>▲ Long</button>
@@ -568,6 +656,14 @@
       <div class="result-outcome" id="result-outcome"></div>
       <div class="result-pct"     id="result-pct"></div>
       <div class="result-rows"    id="result-rows"></div>
+      <div class="reveal-card" id="reveal-card">
+        <div class="reveal-card-title">🔍 Revealed</div>
+        <div id="reveal-card-body"></div>
+      </div>
+      <div class="pattern-card" id="pattern-card">
+        <div class="pattern-card-title">📊 Chart Pattern</div>
+        <div id="pattern-card-body"></div>
+      </div>
     </div>
     <div class="history-wrap">
       <div class="history-title">History</div>
@@ -731,6 +827,22 @@ const AUTH = {
       return r.ok ? await r.json() : null;
     } catch { return null; }
   },
+
+  async getAchievements() {
+    try { const r = await fetch('/api/achievements', { headers: this._authHeaders() }); return r.ok ? await r.json() : []; } catch { return []; }
+  },
+  async unlockAchievement(code) {
+    try {
+      const r = await fetch('/api/achievements', { method:'POST', headers:this._authHeaders(), body:JSON.stringify({ code }) });
+      return r.ok ? await r.json() : null;
+    } catch { return null; }
+  },
+  async getDailyConfig() {
+    try { const r = await fetch('/api/daily', { headers: this._authHeaders() }); return r.ok ? await r.json() : null; } catch { return null; }
+  },
+  async getDailyLeaderboard() {
+    try { const r = await fetch('/api/daily/leaderboard', { headers: this._authHeaders() }); return r.ok ? await r.json() : []; } catch { return []; }
+  },
 };
 
 // ── Auth UI ──
@@ -778,7 +890,9 @@ function onAuthSuccess() {
   document.getElementById('auth-overlay').style.display = 'none';
   document.getElementById('user-name').textContent = AUTH.currentUser;
   document.getElementById('user-badge').style.display = 'flex';
+  document.getElementById('daily-btn').style.display = 'block';
   checkNotifications();
+  loadAchievements();
   AUTH.getTrades().then(saved => {
     const nonSkip = saved.filter(t => t.direction !== 'skip');
     S.wins = nonSkip.filter(t => t.won).length;
@@ -1177,6 +1291,369 @@ function showComparison(ch) {
 }
 
 // ══════════════════════════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ══════════════════════════════════════════════════════════════════════
+const ACHIEVEMENTS = [
+  { code:'first_blood',   icon:'🩸', name:'First Blood',      desc:'Complete your first real trade' },
+  { code:'first_tp',      icon:'🎯', name:'Dead on Target',   desc:'Hit Take Profit for the first time' },
+  { code:'streak_3',      icon:'🔥', name:'On Fire',          desc:'3-trade win streak' },
+  { code:'streak_5',      icon:'💥', name:'Hot Streak',       desc:'5-trade win streak' },
+  { code:'streak_10',     icon:'⚡', name:'Unstoppable',      desc:'10-trade win streak' },
+  { code:'centurion',     icon:'💯', name:'Centurion',        desc:'Complete 100 real trades' },
+  { code:'fifty',         icon:'🏅', name:'Half-Century',     desc:'Complete 50 real trades' },
+  { code:'grade_a',       icon:'🎓', name:'Top Trader',       desc:'Earn an A grade on a milestone report' },
+  { code:'perfect_rr',    icon:'📐', name:'Sniper',           desc:'Set a trade with R:R of 3:1 or better' },
+  { code:'no_sl_miss',    icon:'🛡️', name:'Disciplined',     desc:'10 consecutive trades all with a Stop Loss' },
+  { code:'scalper',       icon:'⚡', name:'Scalper',          desc:'Complete 10 Scalp trades' },
+  { code:'swing_master',  icon:'📊', name:'Swing Master',     desc:'Complete 10 Swing trades' },
+  { code:'long_term_pro', icon:'🌍', name:'Long-Term Pro',    desc:'Complete 10 Long Term trades' },
+  { code:'daily_first',   icon:'📅', name:'Daily Warrior',   desc:'Complete your first Daily Challenge' },
+  { code:'comeback',      icon:'🔄', name:'Comeback Kid',     desc:'Win a trade after a 3-loss streak' },
+];
+
+let _unlockedCodes = new Set();
+let _toastQueue    = [];
+let _toastRunning  = false;
+
+async function loadAchievements() {
+  const list = await AUTH.getAchievements();
+  _unlockedCodes = new Set(list.map(a => a.code));
+}
+
+async function checkAchievements(allTrades) {
+  const real   = allTrades.filter(t => t.direction !== 'skip');
+  const daily  = allTrades.filter(t => t.isDaily && t.direction !== 'skip');
+  const toCheck = [];
+
+  if (real.length >= 1)  toCheck.push('first_blood');
+  if (real.some(t => t.hit === 'tp')) toCheck.push('first_tp');
+  if (real.length >= 50) toCheck.push('fifty');
+  if (real.length >= 100) toCheck.push('centurion');
+  if (daily.length >= 1) toCheck.push('daily_first');
+
+  // Win streak
+  let curStreak = 0;
+  for (let i = real.length - 1; i >= 0; i--) {
+    if (real[i].won) curStreak++;
+    else break;
+  }
+  if (curStreak >= 3)  toCheck.push('streak_3');
+  if (curStreak >= 5)  toCheck.push('streak_5');
+  if (curStreak >= 10) toCheck.push('streak_10');
+
+  // Comeback: win after 3-loss streak
+  for (let i = 3; i < real.length; i++) {
+    if (real[i].won && !real[i-1].won && !real[i-2].won && !real[i-3].won) {
+      toCheck.push('comeback'); break;
+    }
+  }
+
+  // Perfect R:R
+  if (real.some(t => !isNaN(t.tp) && t.tp > 0 && !isNaN(t.sl) && t.sl > 0 &&
+      Math.abs(t.tp - t.entry) / Math.abs(t.sl - t.entry) >= 3))
+    toCheck.push('perfect_rr');
+
+  // 10 consecutive with SL
+  if (real.length >= 10) {
+    const last10 = real.slice(-10);
+    if (last10.every(t => !isNaN(t.sl) && t.sl > 0)) toCheck.push('no_sl_miss');
+  }
+
+  // Style counts
+  const scalps    = real.filter(t => t.style === 'scalp');
+  const swings    = real.filter(t => t.style === 'swing');
+  const longtimes = real.filter(t => t.style === 'longterm');
+  if (scalps.length    >= 10) toCheck.push('scalper');
+  if (swings.length    >= 10) toCheck.push('swing_master');
+  if (longtimes.length >= 10) toCheck.push('long_term_pro');
+
+  // Unlock new ones
+  for (const code of toCheck) {
+    if (_unlockedCodes.has(code)) continue;
+    _unlockedCodes.add(code);
+    AUTH.unlockAchievement(code);
+    const def = ACHIEVEMENTS.find(a => a.code === code);
+    if (def) queueToast(def);
+  }
+}
+
+function queueToast(def) {
+  _toastQueue.push(def);
+  if (!_toastRunning) runToastQueue();
+}
+
+function runToastQueue() {
+  if (!_toastQueue.length) { _toastRunning = false; return; }
+  _toastRunning = true;
+  const def = _toastQueue.shift();
+  const toast = document.getElementById('ach-toast');
+  document.getElementById('ach-toast-icon').textContent  = def.icon;
+  document.getElementById('ach-toast-title').textContent = def.name;
+  document.getElementById('ach-toast-sub').textContent   = def.desc;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(runToastQueue, 400);
+  }, 3500);
+}
+
+function unlockGradeA() {
+  if (_unlockedCodes.has('grade_a')) return;
+  _unlockedCodes.add('grade_a');
+  AUTH.unlockAchievement('grade_a');
+  const def = ACHIEVEMENTS.find(a => a.code === 'grade_a');
+  if (def) queueToast(def);
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// CHART PATTERN DETECTION
+// ══════════════════════════════════════════════════════════════════════
+function detectChartPattern(candles) {
+  if (candles.length < 20) return null;
+  const closes = candles.map(c => c.close);
+  const highs  = candles.map(c => c.high);
+  const lows   = candles.map(c => c.low);
+  const n = closes.length;
+
+  const earlySlice  = Math.floor(n * 0.35);
+  const lateSlice   = Math.floor(n * 0.3);
+  const midIdx      = Math.floor(n / 2);
+
+  const avg    = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+  const earlyC = avg(closes.slice(0, earlySlice));
+  const lateC  = avg(closes.slice(-lateSlice));
+  const midC   = closes[midIdx];
+  const changePct = (lateC - earlyC) / earlyC * 100;
+
+  // Overall high/low range
+  const hiAll = Math.max(...highs), loAll = Math.min(...lows);
+  const rangePct = (hiAll - loAll) / earlyC * 100;
+
+  // Recent tight consolidation vs early move
+  const earlyRange = (Math.max(...highs.slice(0, earlySlice)) - Math.min(...lows.slice(0, earlySlice))) / earlyC * 100;
+  const lateRange  = (Math.max(...highs.slice(-lateSlice))   - Math.min(...lows.slice(-lateSlice)))   / lateC  * 100;
+  const isConsolidating = lateRange < earlyRange * 0.55 && lateRange < 3.5;
+
+  // Linear trend slope
+  const xMean = (n - 1) / 2;
+  const yMean = avg(closes);
+  let num = 0, den = 0;
+  closes.forEach((v, i) => { num += (i - xMean) * (v - yMean); den += (i - xMean) ** 2; });
+  const slopePct = den ? (num / den) / yMean * 100 : 0;
+
+  if (isConsolidating && changePct >  5) return { name:'Bull Flag',     emoji:'🚩', color:'var(--green)', desc:'Strong upward move followed by tight consolidation — a classic continuation pattern. Price often breaks upward after the flag.' };
+  if (isConsolidating && changePct < -5) return { name:'Bear Flag',     emoji:'🚩', color:'var(--red)',   desc:'Sharp drop followed by tight consolidation — bearish continuation. The pause is usually before a second leg down.' };
+  if (changePct >  9)  return { name:'Uptrend',              emoji:'📈', color:'var(--green)', desc:'Price climbed consistently across the window. Trend traders look for pullbacks toward support to add to longs.' };
+  if (changePct < -9)  return { name:'Downtrend',            emoji:'📉', color:'var(--red)',   desc:'Steady decline through the window. Shorting retracements back to resistance is the typical playbook.' };
+  if (rangePct   < 4 && Math.abs(changePct) < 2) return { name:'Range / Consolidation', emoji:'↔️', color:'var(--muted)', desc:'Price bounced between support and resistance with no clear direction. Range traders sell the top, buy the bottom.' };
+
+  // Rounded top (distribution)
+  if (midC > earlyC * 1.03 && midC > lateC * 1.03)
+    return { name:'Distribution / Rounded Top', emoji:'🔻', color:'var(--red)', desc:'Price peaked in the middle and began fading — often marks a transition from uptrend to downtrend as sellers take control.' };
+
+  // Rounded bottom (accumulation)
+  if (midC < earlyC * 0.97 && midC < lateC * 0.97)
+    return { name:'Accumulation / Rounded Bottom', emoji:'🔺', color:'var(--green)', desc:'Price dipped to a low then recovered — buyers absorbing supply at lower prices before a potential upward move.' };
+
+  if (slopePct >  0.06) return { name:'Gradual Uptrend',   emoji:'↗️', color:'var(--green)', desc:'Slow but consistent upward drift. Less momentum than a strong uptrend but still favors long setups on dips.' };
+  if (slopePct < -0.06) return { name:'Gradual Downtrend', emoji:'↘️', color:'var(--red)',   desc:'Slow but persistent selling pressure. Short setups on bounces tend to work in this environment.' };
+
+  return { name:'Choppy / No Pattern', emoji:'〰️', color:'var(--muted)', desc:'No clear structure — price moved without a defined trend or range. These low-quality conditions are best avoided.' };
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// PSYCHOLOGICAL PATTERN DETECTION
+// ══════════════════════════════════════════════════════════════════════
+function detectPsychPatterns(trades) {
+  const real = trades.filter(t => t.direction !== 'skip');
+  if (real.length < 6) return [];
+  const patterns = [];
+
+  // 1. Fear Response — tight stops + high SL hit rate
+  const withSL = real.filter(t => !isNaN(t.sl) && t.sl > 0);
+  const slHits = real.filter(t => t.hit === 'sl');
+  if (withSL.length >= 5) {
+    const avgSlPct = withSL.reduce((s, t) => s + Math.abs(t.sl - t.entry) / t.entry * 100, 0) / withSL.length;
+    if (avgSlPct < 1.8 && slHits.length > real.length * 0.4)
+      patterns.push({ icon:'😰', name:'Fear Response', color:'var(--yellow)',
+        desc:`Your average stop distance is only ${avgSlPct.toFixed(2)}% from entry and ${slHits.length}/${real.length} trades hit SL. Stops this tight are triggered by normal market noise before a real move develops. Place stops beyond a clear structural level, not a fixed percentage.` });
+  }
+
+  // 2. Revenge Trading — consecutive losses clustering
+  let revengePairs = 0;
+  for (let i = 1; i < real.length; i++)
+    if (!real[i-1].won && !real[i].won) revengePairs++;
+  if (revengePairs >= 3 && real.length >= 8)
+    patterns.push({ icon:'😤', name:'Revenge Trading', color:'var(--red)',
+      desc:`${revengePairs} back-to-back loss pairs detected. Re-entering immediately after a loss often leads to impulsive, under-planned trades. Consider a cool-down rule: skip at least one round after any loss before trading again.` });
+
+  // 3. Directional lock — strong imbalance between long/short
+  const longs  = real.filter(t => t.direction === 'long');
+  const longPct = longs.length / real.length;
+  if (real.length >= 8) {
+    if (longPct > 0.8)
+      patterns.push({ icon:'🔒', name:'Bullish Bias Lock', color:'var(--yellow)',
+        desc:`${Math.round(longPct*100)}% of trades are long. You may be filtering out valid short setups due to a bullish bias. Markets move both ways — practise spotting bearish structure with the same rigour as bullish setups.` });
+    else if (longPct < 0.2)
+      patterns.push({ icon:'🔒', name:'Bearish Bias Lock', color:'var(--yellow)',
+        desc:`${Math.round((1-longPct)*100)}% of trades are short. An extreme bearish bias leads to missing strong uptrends. Challenge yourself to look for both sides before committing to a direction.` });
+  }
+
+  // 4. Declining R:R discipline — getting lazier over time
+  const withRR = real.filter(t => !isNaN(t.tp) && t.tp > 0 && !isNaN(t.sl) && t.sl > 0);
+  if (withRR.length >= 8) {
+    const half = Math.floor(withRR.length / 2);
+    const rrOf = arr => arr.reduce((s, t) => s + Math.abs(t.tp - t.entry) / Math.abs(t.sl - t.entry), 0) / arr.length;
+    const earlyRR = rrOf(withRR.slice(0, half));
+    const lateRR  = rrOf(withRR.slice(half));
+    if (earlyRR > lateRR * 1.35 && lateRR < 1.3)
+      patterns.push({ icon:'📉', name:'Declining Risk Discipline', color:'var(--red)',
+        desc:`Your average R:R dropped from 1:${earlyRR.toFixed(2)} early on to 1:${lateRR.toFixed(2)} recently. As comfort increased, risk standards slipped. Enforce a minimum R:R gate before every entry — if TP is not at least 1.5× SL distance, skip the setup.` });
+  }
+
+  // 5. Stop hunt victim — very tight SL hit (within 1% of entry)
+  const tightSLHits = slHits.filter(t => !isNaN(t.sl) && t.sl > 0 && Math.abs(t.exit - t.entry) / t.entry * 100 < 1.2);
+  if (tightSLHits.length >= 2)
+    patterns.push({ icon:'🎯', name:'Stop Hunt Victim', color:'var(--yellow)',
+      desc:`${tightSLHits.length} trades were stopped out within 1.2% of entry — a classic stop hunt signature. The market briefly swept below/above your stop to collect liquidity before reversing. Place stops just beyond actual swing highs/lows, not round percentage levels.` });
+
+  if (patterns.length === 0)
+    patterns.push({ icon:'✅', name:'No Red Flags Detected', color:'var(--green)',
+      desc:`No dominant negative psychological pattern found across your last ${real.length} trades. Keep practising consistent execution and review again after more data accumulates.` });
+
+  return patterns;
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// DAILY CHALLENGE
+// ══════════════════════════════════════════════════════════════════════
+async function showDailyChallenge() {
+  document.getElementById('daily-modal').style.display = 'flex';
+  const body = document.getElementById('daily-body');
+  body.innerHTML = '<div class="overlay-inner"><div class="spinner"></div></div>';
+
+  const [config, board] = await Promise.all([AUTH.getDailyConfig(), AUTH.getDailyLeaderboard()]);
+
+  if (!config) {
+    body.innerHTML = '<div style="color:var(--muted);font-size:12px;text-align:center;padding:40px;">Could not load daily challenge.</div>';
+    return;
+  }
+
+  const STYLES_CFG = {
+    scalp:    { label:'Scalp',     emoji:'⚡' },
+    swing:    { label:'Swing',     emoji:'📊' },
+    longterm: { label:'Long Term', emoji:'🌍' },
+  };
+  const cfg = STYLES_CFG[config.style] || { label: config.style, emoji: '📈' };
+
+  const today = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+
+  let boardHtml = '';
+  if (board.length) {
+    boardHtml = `<div class="an-section-title" style="margin-top:8px;">Today's Leaderboard</div>` +
+      board.map((r, i) => {
+        const col  = r.pct >= 0 ? 'var(--green)' : 'var(--red)';
+        const sign = r.pct >= 0 ? '+' : '';
+        const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
+        return `<div class="daily-lb-row${r.isYou ? ' you' : ''}">
+          <div class="daily-lb-rank">${rank}</div>
+          <div class="daily-lb-name">${r.username}${r.isYou ? ' <span style="font-size:9px;color:var(--blue);background:rgba(88,166,255,.15);border-radius:4px;padding:1px 5px;">you</span>' : ''}</div>
+          <div class="daily-lb-pct" style="color:${col}">${sign}${r.pct.toFixed(2)}%</div>
+        </div>`;
+      }).join('');
+  } else {
+    boardHtml = '<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px 0;">Be the first to trade today\'s chart!</div>';
+  }
+
+  const played = config.alreadyPlayed;
+
+  body.innerHTML = `
+    <div style="background:rgba(227,179,65,.06);border:1px solid rgba(227,179,65,.2);border-radius:8px;padding:14px;">
+      <div style="font-size:10px;color:var(--yellow);font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;">Today — ${today}</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px;">${cfg.emoji} ${cfg.label} · ${config.interval}</div>
+      <div style="font-size:11px;color:var(--muted);">Asset: Hidden · Same chart for all players</div>
+    </div>
+    ${played
+      ? `<div style="background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.25);border-radius:8px;padding:12px;font-size:12px;color:var(--green);font-weight:600;">✓ You've already completed today's challenge! Check your position on the leaderboard below.</div>`
+      : `<button class="btn btn-new" style="width:100%;padding:13px;" onclick="startDailyRound()">▶ Trade Today's Chart</button>`
+    }
+    ${boardHtml}`;
+}
+
+async function startDailyRound() {
+  document.getElementById('daily-modal').style.display = 'none';
+  const config = await AUTH.getDailyConfig();
+  if (!config || config.alreadyPlayed) return;
+
+  const STYLES_CFG = {
+    scalp:    { label:'Scalp',     emoji:'⚡', color:'var(--yellow)', intervals:['15m','1h'],  histLen:100, futLen:100, tfLabel:{'15m':'15m','1h':'1h'} },
+    swing:    { label:'Swing',     emoji:'📊', color:'var(--blue)',   intervals:['4h','1d'],   histLen:100, futLen:100, tfLabel:{'4h':'4h','1d':'Daily'} },
+    longterm: { label:'Long Term', emoji:'🌍', color:'var(--green)',  intervals:['1d','1w'],   histLen:100, futLen:100, tfLabel:{'1d':'Daily','1w':'Weekly'} },
+  };
+
+  S.style = config.style;
+  const cfg    = STYLES_CFG[config.style] || STYLES_CFG.swing;
+  const symbol = config.asset;
+  const interval = config.interval;
+
+  const badge = document.getElementById('style-badge');
+  badge.textContent = `${cfg.emoji} ${cfg.label}`;
+  badge.style.color = cfg.color;
+  document.getElementById('style-badge-wrap').style.display = 'block';
+  document.getElementById('change-style-btn').style.display = 'block';
+  document.getElementById('new-btn').style.display  = 'block';
+  document.getElementById('daily-btn').style.display = 'block';
+  document.getElementById('toolbar').classList.add('show');
+
+  clearSim(); drawings = []; drawPhase = 0; drawP1 = null;
+  resetRoundUI();
+  showOverlay('spinner', 'Loading daily chart…');
+  S.loading = true; document.getElementById('new-btn').disabled = true;
+
+  try {
+    const all = await fetchCandles(symbol, interval);
+    const offset = config.histOffset;
+    if (all.length < offset + config.histLen + config.futLen) throw new Error('Not enough data for daily chart.');
+
+    const start    = all.length - offset - config.histLen - config.futLen;
+    const histRaw  = all.slice(start, start + config.histLen);
+    const futRaw   = all.slice(start + config.histLen, start + config.histLen + config.futLen);
+
+    const FAKE = 1577836800, DAY = 86400;
+    const histCandles = histRaw.map((c, i) => ({ ...c, time: FAKE + i * DAY }));
+    const futCandles  = futRaw.map( (c, i) => ({ ...c, time: FAKE + (config.histLen + i) * DAY }));
+
+    S.round = {
+      symbol, interval,
+      histCandles, futCandles,
+      entry: histRaw[histRaw.length - 1].close,
+      direction: null, tp: NaN, sl: NaN,
+      realStartTs: histRaw[0].time,
+      realEndTs:   histRaw[histRaw.length - 1].time,
+      isDaily: true,
+    };
+
+    buildChart();
+    mainSeries.setData(histCandles);
+    mainSeries.setMarkers([{ time: histCandles[histCandles.length-1].time, position:'aboveBar', color:'#e3b341', shape:'arrowDown', text:'Entry →' }]);
+    chart.timeScale().fitContent();
+    hideOverlay();
+    refreshMASeries();
+    redrawCanvas();
+
+    document.getElementById('price-el').textContent      = fmtPrice(S.round.entry);
+    document.getElementById('meta-el').textContent       = `📅 Daily Challenge · ${cfg.emoji} ${cfg.label} · ${interval} · Blind`;
+    document.getElementById('round-info-el').textContent = '100 candles · trade it!';
+    document.getElementById('challenge-banner').classList.add('show');
+    document.getElementById('challenge-banner-text').textContent = '📅 Daily Challenge — same chart for everyone!';
+    setTradeButtons(true);
+  } catch(err) {
+    showOverlay('error', err.message || 'Could not load daily chart.');
+  }
+  S.loading = false; document.getElementById('new-btn').disabled = false;
+}
+
+// ══════════════════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════════════════
 const S = {
@@ -1509,6 +1986,9 @@ async function startRound() {
   document.getElementById('friend-picker').style.display = 'none';
   document.getElementById('challenge-result-btn').classList.remove('show');
   document.getElementById('challenge-banner').classList.remove('show');
+  document.getElementById('note-input').value = '';
+  document.getElementById('reveal-card').classList.remove('show');
+  document.getElementById('pattern-card').classList.remove('show');
   clearSim(); drawings = []; drawPhase = 0; drawP1 = null;
 
   const cfg      = STYLES[S.style];
@@ -1532,7 +2012,8 @@ async function startRound() {
     const histCandles = histRaw.map((c,i) => ({ ...c, time:FAKE+i*DAY }));
     const futCandles  = futRaw.map( (c,i) => ({ ...c, time:FAKE+(cfg.histLen+i)*DAY }));
 
-    S.round = { symbol, interval, histCandles, futCandles, entry:histRaw[histRaw.length-1].close, direction:null, tp:NaN, sl:NaN };
+    S.round = { symbol, interval, histCandles, futCandles, entry:histRaw[histRaw.length-1].close, direction:null, tp:NaN, sl:NaN,
+      realStartTs: histRaw[0].time, realEndTs: histRaw[histRaw.length-1].time, isDaily: false };
 
     buildChart();
     mainSeries.setData(histCandles);
@@ -1653,7 +2134,8 @@ function endSim(hit, exitPrice, triggerCandle, endStep) {
   if (direction==='long')  pct =  (exitPrice-entry)/entry*100;
   if (direction==='short') pct = -(exitPrice-entry)/entry*100;
   const won   = pct > 0;
-  const trade = { direction, entry, exit:exitPrice, hit, pct, tp, sl, interval, won:direction!=='skip'?won:null };
+  const note  = (document.getElementById('note-input').value || '').trim() || null;
+  const trade = { direction, entry, exit:exitPrice, hit, pct, tp, sl, interval, won:direction!=='skip'?won:null, style:S.style, note, isDaily: S.round.isDaily || false };
   if (direction !== 'skip') { if (won){S.wins++;S.streak=S.streak>0?S.streak+1:1;}else{S.losses++;S.streak=S.streak<0?S.streak-1:-1;} }
   const reasonMap = { tp:'✓ TP Hit', sl:'✗ SL Hit', expire:'Window Closed', skip:'Skipped' };
   const arrow = exitPrice >= entry ? '▲' : '▼';
@@ -1662,6 +2144,32 @@ function endSim(hit, exitPrice, triggerCandle, endStep) {
   _lastTrade = trade;
   const feedback = (hit !== 'skip' && endStep !== null) ? generateFeedback(trade, futCandles, endStep) : null;
   showResult(trade, feedback);
+
+  // ── Reveal card ──
+  if (hit !== 'skip' && S.round.realStartTs) {
+    const fmt = ts => new Date(ts * 1000).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    const assetNames = { BTCUSDT:'Bitcoin (BTC)', ETHUSDT:'Ethereum (ETH)', SOLUSDT:'Solana (SOL)', BNBUSDT:'BNB', ADAUSDT:'Cardano (ADA)', XRPUSDT:'XRP', DOGEUSDT:'Dogecoin (DOGE)', AVAXUSDT:'Avalanche (AVAX)', LINKUSDT:'Chainlink (LINK)', DOTUSDT:'Polkadot (DOT)' };
+    const name = assetNames[S.round.symbol] || S.round.symbol;
+    const tfLabel = (STYLES[S.style]?.tfLabel || {})[S.round.interval] || S.round.interval;
+    document.getElementById('reveal-card-body').innerHTML =
+      `<div class="reveal-card-row"><span class="reveal-card-label">Asset</span><span class="reveal-card-val">${name}</span></div>
+       <div class="reveal-card-row"><span class="reveal-card-label">Timeframe</span><span class="reveal-card-val">${tfLabel}</span></div>
+       <div class="reveal-card-row"><span class="reveal-card-label">Period</span><span class="reveal-card-val">${fmt(S.round.realStartTs)} – ${fmt(S.round.realEndTs)}</span></div>
+       <div class="reveal-card-row"><span class="reveal-card-label">Entry price</span><span class="reveal-card-val">${fmtPrice(entry)}</span></div>`;
+    document.getElementById('reveal-card').classList.add('show');
+  }
+
+  // ── Pattern card ──
+  if (hit !== 'skip') {
+    const pat = detectChartPattern(S.round.histCandles);
+    if (pat) {
+      document.getElementById('pattern-card-body').innerHTML =
+        `<div class="pattern-name" style="color:${pat.color}">${pat.emoji} ${pat.name}</div>
+         <div class="pattern-desc">${pat.desc}</div>`;
+      document.getElementById('pattern-card').classList.add('show');
+    }
+  }
+
   addHistory(trade);
   updateStats();
   document.getElementById('next-btn').style.display = 'block';
@@ -1696,6 +2204,7 @@ function endSim(hit, exitPrice, triggerCandle, endStep) {
     AUTH.saveTrade(trade)
       .then(() => AUTH.getTrades())
       .then(allTrades => {
+        checkAchievements(allTrades);
         const nonSkip = allTrades.filter(t => t.direction !== 'skip');
         if (nonSkip.length > 0 && nonSkip.length % 10 === 0) {
           setTimeout(() => showMilestone(nonSkip), 900);
@@ -2005,6 +2514,7 @@ function showMilestone(nonSkipTrades) {
   if (noSL.length===0) sc+=2; if (noTP.length===0) sc++;
   if (ev>0) sc++; if (winRate>55&&avgRR&&avgRR>=1.5) sc++;
   const grade = sc>=9?'A':sc>=7?'B':sc>=5?'C':sc>=3?'D':'F';
+  if (grade === 'A') unlockGradeA();
 
   const sorted = [...last10].sort((a,b)=>b.pct-a.pct);
   const best = sorted[0], worst = sorted[sorted.length-1];
@@ -2346,11 +2856,39 @@ function showAnalysis() {
       </div>
 
       <div>
+        <div class="an-section-title">🧠 Psychological Patterns</div>
+        ${detectPsychPatterns(real).map(p => `
+          <div class="psych-card" style="margin-bottom:8px;border-color:${p.color === 'var(--green)' ? 'rgba(63,185,80,.25)' : p.color === 'var(--red)' ? 'rgba(248,81,73,.2)' : 'rgba(227,179,65,.2)'};">
+            <div class="psych-head"><span style="font-size:18px;">${p.icon}</span><span style="color:${p.color};">${p.name}</span></div>
+            <div class="psych-body">${p.desc}</div>
+          </div>`).join('')}
+      </div>
+
+      <div>
         <div class="an-section-title">🤖 Mentor Analysis</div>
         <div class="an-written">${analysis}</div>
       </div>
 
+      <div id="an-achievements-section">
+        <div class="an-section-title">🏆 Achievements</div>
+        <div class="badge-grid" id="an-badge-grid">
+          <div style="color:var(--muted);font-size:11px;">Loading…</div>
+        </div>
+      </div>
+
     </div>`;
+
+    // Load achievements into badge grid
+    AUTH.getAchievements().then(unlocked => {
+      const unlockedSet = new Set(unlocked.map(a => a.code));
+      const grid = document.getElementById('an-badge-grid');
+      if (!grid) return;
+      grid.innerHTML = ACHIEVEMENTS.map(a => `
+        <div class="badge-item ${unlockedSet.has(a.code) ? 'unlocked' : 'locked'}" title="${a.desc}">
+          <div class="badge-icon">${a.icon}</div>
+          <div class="badge-name">${a.name}</div>
+        </div>`).join('');
+    });
 
   }).catch(() => {});
 }

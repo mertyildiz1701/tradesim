@@ -39,7 +39,15 @@ async function initDB() {
       UNIQUE(requester_id, addressee_id)
     );
 
-    CREATE TABLE IF NOT EXISTS challenges (
+    CREATE TABLE IF NOT EXISTS achievements (
+    id          SERIAL PRIMARY KEY,
+    user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    code        TEXT NOT NULL,
+    unlocked_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(user_id, code)
+  );
+
+  CREATE TABLE IF NOT EXISTS challenges (
       id             SERIAL PRIMARY KEY,
       sender_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       receiver_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -53,6 +61,10 @@ async function initDB() {
       created_at     TIMESTAMP DEFAULT NOW()
     );
   `);
+
+  // Add columns that may not exist on older DBs
+  await pool.query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS note TEXT`);
+  await pool.query(`ALTER TABLE trades ADD COLUMN IF NOT EXISTS is_daily BOOLEAN DEFAULT FALSE`);
 }
 
 initDB().catch(err => console.error('DB init error:', err));

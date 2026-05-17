@@ -11,8 +11,10 @@ app.use(express.json());
 app.use('/api/auth',       require('./routes/auth'));
 app.use('/api/trades',     require('./routes/trades'));
 app.use('/api/friends',    require('./routes/friends'));
-app.use('/api/challenges', require('./routes/challenges'));
-app.use('/api/admin',      require('./routes/admin'));
+app.use('/api/challenges',   require('./routes/challenges'));
+app.use('/api/achievements', require('./routes/achievements'));
+app.use('/api/daily',        require('./routes/daily'));
+app.use('/api/admin',        require('./routes/admin'));
 
 // Admin panel
 app.get('/admin', (req, res) => {

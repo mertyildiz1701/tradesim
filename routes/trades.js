@@ -19,6 +19,8 @@ router.get('/', requireAuth, async (req, res) => {
       interval:  t.interval_tf,
       won:       t.won,
       style:     t.style,
+      note:      t.note,
+      isDaily:   t.is_daily,
       ts:        new Date(t.created_at).getTime(),
     })));
   } catch (e) {
@@ -28,16 +30,17 @@ router.get('/', requireAuth, async (req, res) => {
 });
 
 router.post('/', requireAuth, async (req, res) => {
-  const { direction, entry, exit, hit, pct, tp, sl, interval, won, style } = req.body || {};
+  const { direction, entry, exit, hit, pct, tp, sl, interval, won, style, note, isDaily } = req.body || {};
   if (!direction || entry == null || !hit)
     return res.status(400).json({ error: 'Missing required fields.' });
 
   try {
     await db.query(
-      `INSERT INTO trades (user_id, direction, entry, exit_price, hit, pct, tp, sl, interval_tf, won, style)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      `INSERT INTO trades (user_id, direction, entry, exit_price, hit, pct, tp, sl, interval_tf, won, style, note, is_daily)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
       [req.user.userId, direction, entry, exit ?? 0, hit, pct ?? 0,
-       tp ?? null, sl ?? null, interval ?? null, won ?? false, style ?? null]
+       tp ?? null, sl ?? null, interval ?? null, won ?? false, style ?? null,
+       note ?? null, isDaily ?? false]
     );
     res.json({ ok: true });
   } catch (e) {
