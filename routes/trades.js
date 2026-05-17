@@ -1,19 +1,6 @@
-const router = require('express').Router();
-const jwt    = require('jsonwebtoken');
-const db     = require('../db');
-
-const secret = () => process.env.JWT_SECRET || 'tradesim-dev-secret-change-in-production';
-
-function requireAuth(req, res, next) {
-  const header = req.headers.authorization;
-  if (!header) return res.status(401).json({ error: 'Unauthorized.' });
-  try {
-    req.user = jwt.verify(header.replace('Bearer ', ''), secret());
-    next();
-  } catch {
-    res.status(401).json({ error: 'Invalid or expired token.' });
-  }
-}
+const router      = require('express').Router();
+const db          = require('../db');
+const requireAuth = require('../lib/requireAuth');
 
 router.get('/', requireAuth, (req, res) => {
   const rows = db.prepare(

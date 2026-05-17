@@ -316,6 +316,100 @@
     .an-written strong { color:var(--blue); }
     .an-written h4 { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin:14px 0 5px; }
     .an-empty { text-align:center; padding:60px 20px; color:var(--muted); font-size:13px; }
+
+    /* ── FRIENDS ── */
+    .btn-friends { position:relative; padding:4px 10px; border-radius:5px; border:1px solid rgba(188,140,255,.35); background:rgba(188,140,255,.08); color:var(--purple); font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; }
+    .btn-friends:hover { background:rgba(188,140,255,.2); border-color:var(--purple); }
+    .notif-badge { position:absolute; top:-6px; right:-6px; background:var(--red); color:#fff; border-radius:10px; font-size:9px; font-weight:800; padding:1px 5px; min-width:16px; text-align:center; line-height:14px; display:none; }
+    .tab-badge   { position:absolute; top:-5px; right:-5px; background:var(--red); color:#fff; border-radius:8px; font-size:8px; font-weight:800; padding:0 4px; line-height:14px; display:none; }
+    .friends-modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; width:700px; max-width:100%; max-height:92vh; overflow:hidden; display:flex; flex-direction:column; }
+    .friends-header { padding:18px 24px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; gap:10px; }
+    .friends-title { font-size:17px; font-weight:800; }
+    .friends-tabs { display:flex; gap:4px; }
+    .ftab { position:relative; padding:5px 11px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; font-weight:600; cursor:pointer; transition:all .12s; }
+    .ftab:hover { background:rgba(255,255,255,.05); color:var(--text); }
+    .ftab.on { background:rgba(88,166,255,.15); border-color:rgba(88,166,255,.3); color:var(--blue); }
+    .friends-body { overflow-y:auto; flex:1; padding:18px 24px; display:flex; flex-direction:column; gap:12px; }
+
+    .friend-row { display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+    .friend-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#1f4788,#1a6bc4); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#fff; flex-shrink:0; text-transform:uppercase; }
+    .friend-info { flex:1; min-width:0; }
+    .friend-name { font-size:13px; font-weight:700; margin-bottom:2px; }
+    .friend-stats-line { font-size:11px; color:var(--muted); }
+    .friend-actions { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+    .btn-ch-friend { padding:4px 10px; border-radius:5px; border:1px solid rgba(188,140,255,.35); background:rgba(188,140,255,.08); color:var(--purple); font-size:11px; font-weight:600; cursor:pointer; }
+    .btn-ch-friend:hover:not(:disabled) { background:rgba(188,140,255,.2); }
+    .btn-ch-friend:disabled { opacity:.4; cursor:not-allowed; }
+    .btn-rm-friend { padding:4px 8px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
+    .btn-rm-friend:hover { border-color:var(--red); color:var(--red); }
+
+    .lb-row { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+    .lb-rank { font-size:18px; font-weight:900; width:32px; text-align:center; flex-shrink:0; }
+    .lb-rank.gold { color:#f0b429; } .lb-rank.silver { color:#8b949e; } .lb-rank.bronze { color:#b87333; } .lb-rank.other { color:var(--muted); font-size:13px; }
+    .lb-you-badge { font-size:9px; font-weight:700; background:rgba(88,166,255,.15); color:var(--blue); border-radius:4px; padding:1px 5px; margin-left:5px; }
+    .lb-info { flex:1; }
+    .lb-name { font-size:13px; font-weight:700; margin-bottom:2px; }
+    .lb-sub  { font-size:11px; color:var(--muted); }
+    .lb-right { display:flex; align-items:center; gap:10px; }
+    .lb-wr   { font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; }
+
+    .req-row { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+    .req-info { flex:1; font-size:12px; }
+    .req-name { font-weight:700; color:var(--text); }
+    .req-sub  { font-size:10px; color:var(--muted); margin-top:2px; }
+    .req-out-badge { font-size:10px; color:var(--muted); background:rgba(139,148,158,.12); border-radius:4px; padding:2px 7px; }
+    .btn-accept  { padding:5px 13px; border-radius:5px; border:none; background:var(--green); color:#0d1117; font-size:11px; font-weight:700; cursor:pointer; }
+    .btn-decline { padding:5px 10px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
+    .btn-decline:hover { color:var(--red); border-color:var(--red); }
+    .add-row { display:flex; gap:8px; margin-bottom:4px; }
+    .add-input { flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:6px; font-size:13px; outline:none; font-family:inherit; }
+    .add-input:focus { border-color:var(--blue); }
+    .btn-add { padding:8px 16px; border-radius:6px; border:none; background:var(--blue); color:#0d1117; font-size:12px; font-weight:700; cursor:pointer; }
+    .add-msg { font-size:11px; min-height:14px; }
+
+    .ch-row { display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+    .ch-info { flex:1; min-width:0; }
+    .ch-who  { font-size:12px; font-weight:700; margin-bottom:3px; }
+    .ch-meta { font-size:11px; color:var(--muted); }
+    .ch-badge { padding:2px 7px; border-radius:4px; font-size:10px; font-weight:700; flex-shrink:0; }
+    .ch-pending   { background:rgba(227,179,65,.15);  color:var(--yellow); }
+    .ch-completed { background:rgba(63,185,80,.15);   color:var(--green); }
+    .ch-waiting   { background:rgba(139,148,158,.12); color:var(--muted); }
+    .btn-trade-ch { padding:5px 12px; border-radius:5px; border:none; background:var(--purple); color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
+    .btn-view-ch  { padding:5px 12px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:11px; cursor:pointer; }
+    .btn-view-ch:hover { color:var(--text); }
+    .ch-empty { text-align:center; padding:30px; color:var(--muted); font-size:12px; }
+
+    /* Challenge mode banner in sidebar */
+    .challenge-banner { background:rgba(188,140,255,.08); border:1px solid rgba(188,140,255,.25); border-radius:7px; padding:8px 12px; font-size:11px; color:var(--purple); font-weight:600; display:none; align-items:center; gap:6px; margin-bottom:8px; }
+    .challenge-banner.show { display:flex; }
+
+    /* Challenge result button */
+    .btn-challenge-result { width:100%; padding:8px; border-radius:6px; border:1px solid rgba(188,140,255,.35); background:rgba(188,140,255,.08); color:var(--purple); font-size:12px; font-weight:700; cursor:pointer; margin-top:6px; display:none; }
+    .btn-challenge-result:hover { background:rgba(188,140,255,.2); }
+    .btn-challenge-result.show { display:block; }
+
+    /* Friend picker (inline overlay for challenge send) */
+    .friend-picker { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; position:absolute; right:0; bottom:60px; width:100%; z-index:100; box-shadow:0 8px 32px rgba(0,0,0,.4); }
+    .friend-picker-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:10px; }
+    .picker-friend-row { display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-bottom:1px solid rgba(48,54,61,.5); }
+    .picker-friend-row:last-child { border-bottom:none; }
+    .picker-name { font-size:12px; font-weight:600; }
+    .btn-send-ch { padding:4px 10px; border-radius:5px; border:none; background:var(--purple); color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
+
+    /* Comparison modal */
+    .cmp-modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; width:600px; max-width:100%; display:flex; flex-direction:column; }
+    .cmp-header { padding:20px 24px 14px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .cmp-body { padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+    .cmp-sides { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .cmp-side { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:14px; }
+    .cmp-side-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:8px; }
+    .cmp-side-pct { font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1; margin-bottom:4px; }
+    .cmp-side-detail { font-size:11px; color:var(--muted); line-height:1.7; }
+    .cmp-winner { text-align:center; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:800; }
+    .cmp-you-win  { background:rgba(63,185,80,.1);  border:1px solid rgba(63,185,80,.3);  color:var(--green); }
+    .cmp-they-win { background:rgba(248,81,73,.1);  border:1px solid rgba(248,81,73,.3);  color:var(--red); }
+    .cmp-tie      { background:rgba(139,148,158,.1); border:1px solid var(--border); color:var(--muted); }
   </style>
 </head>
 <body>
@@ -348,6 +442,30 @@
   <div class="milestone-card" style="width:700px;" id="analysis-content"></div>
 </div>
 
+<!-- FRIENDS MODAL -->
+<div class="milestone-overlay" id="friends-modal" style="display:none;">
+  <div class="friends-modal">
+    <div class="friends-header">
+      <div class="friends-title">👥 Friends</div>
+      <div class="friends-tabs">
+        <button class="ftab on" id="ftab-leaderboard" onclick="showFriendsTab('leaderboard')">🏆 Leaderboard</button>
+        <button class="ftab" id="ftab-friends"     onclick="showFriendsTab('friends')">Friends</button>
+        <button class="ftab" id="ftab-requests"    onclick="showFriendsTab('requests')"><span id="req-tab-badge" class="tab-badge"></span>Requests</button>
+        <button class="ftab" id="ftab-challenges"  onclick="showFriendsTab('challenges')"><span id="ch-tab-badge" class="tab-badge"></span>⚔️ Challenges</button>
+      </div>
+      <button class="an-close" onclick="closeFriends()">✕ Close</button>
+    </div>
+    <div class="friends-body" id="friends-body">
+      <div class="overlay-inner"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGE COMPARISON MODAL -->
+<div class="milestone-overlay" id="comparison-modal" style="display:none;">
+  <div class="cmp-modal" id="comparison-content"></div>
+</div>
+
 <!-- HEADER -->
 <header>
   <div class="logo"><div class="logo-icon">📈</div>TradeSim</div>
@@ -358,7 +476,7 @@
     <div class="stat"><div class="stat-label">Win Rate</div><div class="stat-value info" id="s-wr">—</div></div>
     <span id="streak-el"></span>
   </div>
-  <div class="user-badge" id="user-badge" style="display:none;">👤 <strong id="user-name"></strong><button class="btn-stats" onclick="showAnalysis()">📊 My Analysis</button><button class="btn-logout" onclick="doLogout()">Logout</button></div>
+  <div class="user-badge" id="user-badge" style="display:none;">👤 <strong id="user-name"></strong><button class="btn-stats" onclick="showAnalysis()">📊 My Analysis</button><button class="btn-friends" id="friends-btn" onclick="showFriends()"><span class="notif-badge" id="notif-badge"></span>👥 Friends</button><button class="btn-logout" onclick="doLogout()">Logout</button></div>
 </header>
 
 <!-- CONTROLS -->
@@ -413,6 +531,7 @@
 
   <div class="sidebar">
     <div class="sb-section" id="trade-panel">
+      <div class="challenge-banner" id="challenge-banner">⚔️ <span id="challenge-banner-text">Challenge from a friend</span></div>
       <div class="sb-title">Place Trade</div>
       <div class="entry-chip"><span class="entry-chip-label">Entry Price</span><span class="entry-chip-price" id="entry-chip-el">—</span></div>
       <div class="tpsl-wrap">
@@ -436,6 +555,13 @@
         <button class="btn-skip-sim" onclick="skipSim()">⏭ Skip to end</button>
       </div>
       <button class="btn btn-next" id="next-btn" onclick="startRound()" style="display:none;">Next Round →</button>
+      <div style="position:relative;">
+        <button class="btn-challenge-result" id="challenge-result-btn" onclick="toggleFriendPicker()">⚔️ Challenge a Friend</button>
+        <div id="friend-picker" style="display:none;" class="friend-picker">
+          <div class="friend-picker-title">Send this chart to a friend</div>
+          <div id="friend-picker-list"><div style="color:var(--muted);font-size:11px;">Loading friends…</div></div>
+        </div>
+      </div>
     </div>
     <div class="sb-section" id="result-panel" style="display:none;">
       <div class="sb-title">Result</div>
@@ -558,6 +684,53 @@ const AUTH = {
       return await res.json();
     } catch { return []; }
   },
+
+  _authHeaders() {
+    return { 'Content-Type': 'application/json', Authorization: `Bearer ${this._readToken()}` };
+  },
+
+  async getFriends() {
+    try { const r = await fetch('/api/friends', { headers: this._authHeaders() }); return r.ok ? await r.json() : []; } catch { return []; }
+  },
+  async getLeaderboard() {
+    try { const r = await fetch('/api/friends/leaderboard', { headers: this._authHeaders() }); return r.ok ? await r.json() : []; } catch { return []; }
+  },
+  async getFriendRequests() {
+    try { const r = await fetch('/api/friends/requests', { headers: this._authHeaders() }); return r.ok ? await r.json() : { incoming:[], outgoing:[] }; } catch { return { incoming:[], outgoing:[] }; }
+  },
+  async getNotifications() {
+    try { const r = await fetch('/api/friends/notifications', { headers: this._authHeaders() }); return r.ok ? await r.json() : { total:0, pendingRequests:0, pendingChallenges:0 }; } catch { return { total:0 }; }
+  },
+  async sendFriendRequest(username) {
+    try {
+      const r = await fetch('/api/friends/request', { method:'POST', headers:this._authHeaders(), body:JSON.stringify({ username }) });
+      const d = await r.json(); return r.ok ? null : d.error || 'Failed.';
+    } catch { return 'Network error.'; }
+  },
+  async acceptFriend(id) {
+    try { await fetch(`/api/friends/accept/${id}`, { method:'POST', headers:this._authHeaders() }); } catch {}
+  },
+  async declineFriend(id) {
+    try { await fetch(`/api/friends/decline/${id}`, { method:'POST', headers:this._authHeaders() }); } catch {}
+  },
+  async removeFriend(id) {
+    try { await fetch(`/api/friends/${id}`, { method:'DELETE', headers:this._authHeaders() }); } catch {}
+  },
+  async getChallenges() {
+    try { const r = await fetch('/api/challenges', { headers: this._authHeaders() }); return r.ok ? await r.json() : []; } catch { return []; }
+  },
+  async sendChallenge(friendId, payload) {
+    try {
+      const r = await fetch(`/api/challenges/send/${friendId}`, { method:'POST', headers:this._authHeaders(), body:JSON.stringify(payload) });
+      const d = await r.json(); return r.ok ? null : d.error || 'Failed.';
+    } catch { return 'Network error.'; }
+  },
+  async respondChallenge(id, trade) {
+    try {
+      const r = await fetch(`/api/challenges/${id}/respond`, { method:'POST', headers:this._authHeaders(), body:JSON.stringify({ trade }) });
+      return r.ok ? await r.json() : null;
+    } catch { return null; }
+  },
 };
 
 // ── Auth UI ──
@@ -605,6 +778,7 @@ function onAuthSuccess() {
   document.getElementById('auth-overlay').style.display = 'none';
   document.getElementById('user-name').textContent = AUTH.currentUser;
   document.getElementById('user-badge').style.display = 'flex';
+  checkNotifications();
   AUTH.getTrades().then(saved => {
     const nonSkip = saved.filter(t => t.direction !== 'skip');
     S.wins = nonSkip.filter(t => t.won).length;
@@ -639,13 +813,379 @@ function doLogout() {
 }
 
 // ══════════════════════════════════════════════════════════════════════
+// NOTIFICATIONS
+// ══════════════════════════════════════════════════════════════════════
+async function checkNotifications() {
+  const n = await AUTH.getNotifications();
+  const badge = document.getElementById('notif-badge');
+  const reqBadge = document.getElementById('req-tab-badge');
+  const chBadge  = document.getElementById('ch-tab-badge');
+  if (n.total > 0) {
+    badge.textContent = n.total; badge.style.display = 'block';
+  } else {
+    badge.style.display = 'none';
+  }
+  if (reqBadge) { if (n.pendingRequests > 0) { reqBadge.textContent = n.pendingRequests; reqBadge.style.display = 'block'; } else reqBadge.style.display = 'none'; }
+  if (chBadge)  { if (n.pendingChallenges > 0) { chBadge.textContent = n.pendingChallenges; chBadge.style.display = 'block'; } else chBadge.style.display = 'none'; }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// FRIENDS UI
+// ══════════════════════════════════════════════════════════════════════
+let _currentFriendsTab = 'leaderboard';
+
+function showFriends(tab) {
+  document.getElementById('friends-modal').style.display = 'flex';
+  showFriendsTab(tab || _currentFriendsTab);
+}
+
+function closeFriends() {
+  document.getElementById('friends-modal').style.display = 'none';
+  document.getElementById('friend-picker').style.display = 'none';
+}
+
+function showFriendsTab(tab) {
+  _currentFriendsTab = tab;
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
+  const el = document.getElementById(`ftab-${tab}`);
+  if (el) el.classList.add('on');
+  const body = document.getElementById('friends-body');
+  body.innerHTML = '<div class="overlay-inner"><div class="spinner"></div></div>';
+
+  if (tab === 'leaderboard') renderLeaderboard(body);
+  else if (tab === 'friends') renderFriendsList(body);
+  else if (tab === 'requests') renderRequests(body);
+  else if (tab === 'challenges') renderChallenges(body);
+}
+
+function gradeColor(g) {
+  return { A:'var(--green)', B:'var(--blue)', C:'var(--yellow)', D:'#f0883e', F:'var(--red)' }[g] || 'var(--muted)';
+}
+
+function gradeEl(g) {
+  if (!g) return '';
+  const c = gradeColor(g);
+  return `<div class="lb-wr" style="font-size:13px;font-weight:900;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid ${c};color:${c};flex-shrink:0;">${g}</div>`;
+}
+
+async function renderLeaderboard(body) {
+  const board = await AUTH.getLeaderboard();
+  if (!board.length) { body.innerHTML = '<div class="ch-empty">No data yet. Play some rounds!</div>'; return; }
+
+  const rankIcon = (i) => {
+    if (i === 0) return '<span class="lb-rank gold">🥇</span>';
+    if (i === 1) return '<span class="lb-rank silver">🥈</span>';
+    if (i === 2) return '<span class="lb-rank bronze">🥉</span>';
+    return `<span class="lb-rank other">#${i+1}</span>`;
+  };
+
+  body.innerHTML = board.map((p, i) => {
+    const wrColor = p.winRate === null ? 'var(--muted)' : p.winRate >= 55 ? 'var(--green)' : p.winRate >= 45 ? 'var(--yellow)' : 'var(--red)';
+    const wrText  = p.winRate !== null ? `${p.winRate}%` : '—';
+    const rrText  = p.avgRR ? `1:${p.avgRR.toFixed(2)}` : '—';
+    return `<div class="lb-row${p.isYou ? '" style="border-color:rgba(88,166,255,.3)' : ''}">
+      ${rankIcon(i)}
+      <div class="lb-info">
+        <div class="lb-name">${p.username}${p.isYou ? '<span class="lb-you-badge">you</span>' : ''}</div>
+        <div class="lb-sub">${p.totalTrades} trade${p.totalTrades!==1?'s':''} · R:R ${rrText}</div>
+      </div>
+      <div class="lb-right">
+        <div class="lb-wr" style="color:${wrColor}">${wrText}</div>
+        ${gradeEl(p.grade)}
+      </div>
+    </div>`;
+  }).join('') || '<div class="ch-empty">No friends yet — add some!</div>';
+}
+
+async function renderFriendsList(body) {
+  const friends = await AUTH.getFriends();
+  if (!friends.length) {
+    body.innerHTML = '<div class="ch-empty">No friends yet.<br>Go to <b>Requests</b> tab to add someone.</div>';
+    return;
+  }
+  const hasRound = !!(S.round && S.round.direction !== null);
+  body.innerHTML = friends.map(f => {
+    const wrColor = f.winRate === null ? 'var(--muted)' : f.winRate >= 55 ? 'var(--green)' : f.winRate >= 45 ? 'var(--yellow)' : 'var(--red)';
+    return `<div class="friend-row">
+      <div class="friend-avatar">${f.username[0]}</div>
+      <div class="friend-info">
+        <div class="friend-name">${f.username}</div>
+        <div class="friend-stats-line">${f.totalTrades} trades · <span style="color:${wrColor}">${f.winRate !== null ? f.winRate+'% WR' : 'No trades yet'}</span>${f.avgRR ? ' · R:R 1:'+f.avgRR.toFixed(2) : ''}</div>
+      </div>
+      <div class="friend-actions">
+        ${gradeEl(f.grade)}
+        <button class="btn-ch-friend" onclick="challengeFriendFromList(${f.userId},'${f.username}')" ${hasRound?'':'disabled'} title="${hasRound?'Send this chart as a challenge':'Finish a round first to challenge'}">⚔️ Challenge</button>
+        <button class="btn-rm-friend" onclick="removeFriend(${f.friendshipId},'${f.username}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function renderRequests(body) {
+  const { incoming, outgoing } = await AUTH.getFriendRequests();
+  let html = '';
+
+  html += `<div>
+    <div class="an-section-title">Add a Friend</div>
+    <div class="add-row">
+      <input class="add-input" id="add-friend-input" placeholder="Enter username…" onkeydown="if(event.key==='Enter')sendFriendReq()">
+      <button class="btn-add" onclick="sendFriendReq()">Send Request</button>
+    </div>
+    <div class="add-msg" id="add-friend-msg"></div>
+  </div>`;
+
+  if (incoming.length) {
+    html += `<div><div class="an-section-title">Incoming Requests (${incoming.length})</div>` +
+      incoming.map(r => `<div class="req-row">
+        <div class="friend-avatar" style="width:30px;height:30px;font-size:12px;">${r.username[0]}</div>
+        <div class="req-info"><div class="req-name">${r.username}</div><div class="req-sub">wants to be friends</div></div>
+        <button class="btn-accept"  onclick="acceptReq(${r.id})">Accept</button>
+        <button class="btn-decline" onclick="declineReq(${r.id})">Decline</button>
+      </div>`).join('') + '</div>';
+  }
+
+  if (outgoing.length) {
+    html += `<div><div class="an-section-title">Sent Requests</div>` +
+      outgoing.map(r => `<div class="req-row">
+        <div class="friend-avatar" style="width:30px;height:30px;font-size:12px;">${r.username[0]}</div>
+        <div class="req-info"><div class="req-name">${r.username}</div></div>
+        <span class="req-out-badge">Pending…</span>
+      </div>`).join('') + '</div>';
+  }
+
+  if (!incoming.length && !outgoing.length) html += '<div class="ch-empty" style="padding:16px 0;">No pending requests.</div>';
+  body.innerHTML = html;
+}
+
+async function sendFriendReq() {
+  const input = document.getElementById('add-friend-input');
+  const msg   = document.getElementById('add-friend-msg');
+  const name  = (input.value || '').trim();
+  if (!name) return;
+  msg.textContent = 'Sending…'; msg.style.color = 'var(--muted)';
+  const err = await AUTH.sendFriendRequest(name);
+  if (err) { msg.textContent = err; msg.style.color = 'var(--red)'; }
+  else { msg.textContent = `Request sent to ${name}!`; msg.style.color = 'var(--green)'; input.value = ''; checkNotifications(); }
+}
+
+async function acceptReq(id) {
+  await AUTH.acceptFriend(id);
+  checkNotifications();
+  showFriendsTab('requests');
+}
+
+async function declineReq(id) {
+  await AUTH.declineFriend(id);
+  checkNotifications();
+  showFriendsTab('requests');
+}
+
+async function removeFriend(friendshipId, username) {
+  if (!confirm(`Remove ${username} from friends?`)) return;
+  await AUTH.removeFriend(friendshipId);
+  showFriendsTab('friends');
+}
+
+async function renderChallenges(body) {
+  const challenges = await AUTH.getChallenges();
+  checkNotifications();
+  if (!challenges.length) { body.innerHTML = '<div class="ch-empty">No challenges yet.<br>Finish a round and challenge a friend!</div>'; return; }
+
+  body.innerHTML = challenges.map(ch => {
+    const isSender   = ch.isSender;
+    const opponent   = isSender ? ch.receiverUsername : ch.senderUsername;
+    const pending    = ch.status === 'pending';
+    const completed  = ch.status === 'completed';
+    const styleCfg   = STYLES[ch.style] || {};
+    let badgeHtml, actionHtml;
+
+    if (isSender) {
+      badgeHtml  = pending
+        ? `<span class="ch-badge ch-waiting">Waiting for ${opponent}…</span>`
+        : `<span class="ch-badge ch-completed">Completed</span>`;
+      actionHtml = completed
+        ? `<button class="btn-view-ch" onclick="showComparison(${JSON.stringify(ch).replace(/"/g,'&quot;')})">View Results</button>`
+        : '';
+    } else {
+      badgeHtml  = pending
+        ? `<span class="ch-badge ch-pending">Your turn!</span>`
+        : `<span class="ch-badge ch-completed">Completed</span>`;
+      actionHtml = pending
+        ? `<button class="btn-trade-ch" onclick="loadChallengeRound(${ch.id})">Trade It ⚔️</button>`
+        : `<button class="btn-view-ch" onclick="showComparison(${JSON.stringify(ch).replace(/"/g,'&quot;')})">View Results</button>`;
+    }
+
+    let resultLine = '';
+    if (completed && ch.senderTrade && ch.receiverTrade) {
+      const myTrade = isSender ? ch.senderTrade : ch.receiverTrade;
+      const col = myTrade.won ? 'var(--green)' : 'var(--red)';
+      resultLine = `<span style="color:${col};font-weight:700;margin-left:6px;">${myTrade.pct >= 0 ? '+' : ''}${myTrade.pct.toFixed(2)}%</span>`;
+    }
+
+    return `<div class="ch-row">
+      <div class="friend-avatar" style="width:32px;height:32px;font-size:12px;">${opponent[0]}</div>
+      <div class="ch-info">
+        <div class="ch-who">${isSender ? '⚔️ You challenged' : '⚔️ Challenge from'} <strong>${opponent}</strong>${resultLine}</div>
+        <div class="ch-meta">${styleCfg.emoji||''} ${styleCfg.label||ch.style}</div>
+      </div>
+      ${badgeHtml}
+      ${actionHtml}
+    </div>`;
+  }).join('');
+}
+
+// ── Challenge: load a received challenge chart ──
+async function loadChallengeRound(challengeId) {
+  const challenges = await AUTH.getChallenges();
+  const ch = challenges.find(c => c.id === challengeId);
+  if (!ch || !ch.histCandles) return;
+
+  closeFriends();
+  S.challengeMode = { id: ch.id, senderUsername: ch.senderUsername, style: ch.style };
+
+  // Set up style
+  S.style = ch.style;
+  const cfg = STYLES[ch.style] || STYLES.swing;
+  const badge = document.getElementById('style-badge');
+  badge.textContent = `${cfg.emoji} ${cfg.label}`;
+  badge.style.color = cfg.color;
+  document.getElementById('style-badge-wrap').style.display = 'block';
+  document.getElementById('change-style-btn').style.display = 'block';
+  document.getElementById('new-btn').style.display = 'block';
+  document.getElementById('toolbar').classList.add('show');
+
+  clearSim(); drawings = []; drawPhase = 0; drawP1 = null;
+  resetRoundUI();
+
+  const histCandles = ch.histCandles;
+  const futCandles  = ch.futCandles;
+
+  S.round = {
+    symbol: '?', interval: '?',
+    histCandles, futCandles,
+    entry: histCandles[histCandles.length - 1].close,
+    direction: null, tp: NaN, sl: NaN,
+  };
+
+  buildChart();
+  mainSeries.setData(histCandles);
+  mainSeries.setMarkers([{ time: histCandles[histCandles.length-1].time, position:'aboveBar', color:'#e3b341', shape:'arrowDown', text:'Entry →' }]);
+  chart.timeScale().fitContent();
+  hideOverlay();
+  refreshMASeries();
+  redrawCanvas();
+
+  document.getElementById('price-el').textContent      = fmtPrice(S.round.entry);
+  document.getElementById('meta-el').textContent       = `⚔️ Challenge from ${ch.senderUsername} · ${cfg.emoji} ${cfg.label} · Blind`;
+  document.getElementById('round-info-el').textContent = '100 candles · trade it!';
+  document.getElementById('challenge-banner').classList.add('show');
+  document.getElementById('challenge-banner-text').textContent = `Challenge from ${ch.senderUsername} — trade this chart!`;
+  document.getElementById('challenge-result-btn').classList.remove('show');
+  setTradeButtons(true);
+}
+
+// ── Challenge: send current round as challenge to a friend ──
+async function challengeFriendFromList(friendId, username) {
+  if (!S.round || S.round.direction === null) return;
+  closeFriends();
+  const trade = _lastTrade;
+  if (!trade) return;
+  const payload = {
+    style:       S.style,
+    histCandles: S.round.histCandles,
+    futCandles:  S.round.futCandles,
+    futLen:      STYLES[S.style].futLen,
+    senderTrade: trade,
+  };
+  const err = await AUTH.sendChallenge(friendId, payload);
+  if (err) { alert('Could not send challenge: ' + err); return; }
+  document.getElementById('challenge-result-btn').textContent = `✓ Challenge sent to ${username}!`;
+  document.getElementById('challenge-result-btn').style.color = 'var(--green)';
+  setTimeout(() => {
+    const btn = document.getElementById('challenge-result-btn');
+    if (btn) { btn.textContent = '⚔️ Challenge a Friend'; btn.style.color = ''; }
+  }, 3000);
+}
+
+let _friendPickerOpen = false;
+async function toggleFriendPicker() {
+  const picker = document.getElementById('friend-picker');
+  if (_friendPickerOpen) { picker.style.display = 'none'; _friendPickerOpen = false; return; }
+  _friendPickerOpen = true;
+  picker.style.display = 'block';
+  document.getElementById('friend-picker-list').innerHTML = '<div style="color:var(--muted);font-size:11px;">Loading…</div>';
+  const friends = await AUTH.getFriends();
+  if (!friends.length) {
+    document.getElementById('friend-picker-list').innerHTML = '<div style="color:var(--muted);font-size:11px;">No friends yet — add some in the Friends panel.</div>';
+    return;
+  }
+  document.getElementById('friend-picker-list').innerHTML = friends.map(f =>
+    `<div class="picker-friend-row">
+      <span class="picker-name">${f.username}</span>
+      <button class="btn-send-ch" onclick="challengeFriendFromList(${f.userId},'${f.username}')">Send ⚔️</button>
+    </div>`
+  ).join('');
+}
+
+// ── Show comparison modal ──
+function showComparison(ch) {
+  if (typeof ch === 'string') ch = JSON.parse(ch);
+  const isSender = ch.isSender;
+  const myTrade   = isSender ? ch.senderTrade : ch.receiverTrade;
+  const theirTrade = isSender ? ch.receiverTrade : ch.senderTrade;
+  const opponent  = isSender ? ch.receiverUsername : ch.senderUsername;
+  if (!myTrade || !theirTrade) return;
+
+  const side = (trade, label) => {
+    const col = trade.won ? 'var(--green)' : 'var(--red)';
+    const sign = trade.pct >= 0 ? '+' : '';
+    const hitMap = { tp:'✓ TP Hit', sl:'✗ SL Hit', expire:'Expired' };
+    return `<div class="cmp-side">
+      <div class="cmp-side-title">${label}</div>
+      <div class="cmp-side-pct" style="color:${col}">${sign}${trade.pct.toFixed(2)}%</div>
+      <div class="cmp-side-detail">
+        ${trade.direction === 'long' ? '▲ Long' : '▼ Short'}<br>
+        ${hitMap[trade.hit] || trade.hit}<br>
+        Entry: ${fmtPrice(trade.entry)}<br>
+        Exit: ${fmtPrice(trade.exit)}<br>
+        ${trade.tp && trade.sl ? `R:R: 1:${(Math.abs(trade.tp-trade.entry)/Math.abs(trade.sl-trade.entry)).toFixed(2)}` : ''}
+      </div>
+    </div>`;
+  };
+
+  let winnerHtml;
+  if (myTrade.pct > theirTrade.pct)
+    winnerHtml = `<div class="cmp-winner cmp-you-win">🏆 You won this challenge! (+${(myTrade.pct - theirTrade.pct).toFixed(2)}% edge)</div>`;
+  else if (theirTrade.pct > myTrade.pct)
+    winnerHtml = `<div class="cmp-winner cmp-they-win">💪 ${opponent} won this round (+${(theirTrade.pct - myTrade.pct).toFixed(2)}% edge)</div>`;
+  else
+    winnerHtml = `<div class="cmp-winner cmp-tie">🤝 It's a tie!</div>`;
+
+  document.getElementById('comparison-content').innerHTML = `
+    <div class="cmp-header">
+      <div style="font-size:17px;font-weight:800;">⚔️ Challenge vs ${opponent}</div>
+      <button class="an-close" onclick="document.getElementById('comparison-modal').style.display='none'">✕ Close</button>
+    </div>
+    <div class="cmp-body">
+      ${winnerHtml}
+      <div class="cmp-sides">
+        ${side(myTrade, '👤 You')}
+        ${side(theirTrade, `👤 ${opponent}`)}
+      </div>
+    </div>`;
+  document.getElementById('comparison-modal').style.display = 'flex';
+}
+
+// ══════════════════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════════════════
 const S = {
   style:null, speed:'normal', round:null, cache:{},
   loading:false, simTimer:null, simStep:0,
   wins:0, losses:0, streak:0,
+  challengeMode: null,
 };
+let _lastTrade = null;
 
 // ══════════════════════════════════════════════════════════════════════
 // DRAWING STATE
@@ -963,6 +1503,12 @@ function refreshMASeries() {
 // ══════════════════════════════════════════════════════════════════════
 async function startRound() {
   if (S.loading || !S.style) return;
+  S.challengeMode = null;
+  _lastTrade = null;
+  _friendPickerOpen = false;
+  document.getElementById('friend-picker').style.display = 'none';
+  document.getElementById('challenge-result-btn').classList.remove('show');
+  document.getElementById('challenge-banner').classList.remove('show');
   clearSim(); drawings = []; drawPhase = 0; drawP1 = null;
 
   const cfg      = STYLES[S.style];
@@ -1113,13 +1659,40 @@ function endSim(hit, exitPrice, triggerCandle, endStep) {
   const arrow = exitPrice >= entry ? '▲' : '▼';
   document.getElementById('meta-el').textContent  = `Revealed · ${reasonMap[hit]} · ${arrow} ${Math.abs((exitPrice-entry)/entry*100).toFixed(2)}%`;
   document.getElementById('price-el').textContent = fmtPrice(exitPrice);
+  _lastTrade = trade;
   const feedback = (hit !== 'skip' && endStep !== null) ? generateFeedback(trade, futCandles, endStep) : null;
   showResult(trade, feedback);
   addHistory(trade);
   updateStats();
   document.getElementById('next-btn').style.display = 'block';
-  // Persist and check milestone
+  document.getElementById('challenge-banner').classList.remove('show');
+
+  // Challenge mode: submit result and show comparison
+  if (S.challengeMode && direction !== 'skip') {
+    const cm = S.challengeMode;
+    S.challengeMode = null;
+    AUTH.respondChallenge(cm.id, trade).then(resp => {
+      checkNotifications();
+      if (resp && resp.senderTrade) {
+        setTimeout(() => showComparison({
+          isSender: false,
+          senderUsername: cm.senderUsername,
+          receiverUsername: AUTH.currentUser,
+          senderTrade: resp.senderTrade,
+          receiverTrade: trade,
+        }), 800);
+      }
+    });
+    return;
+  }
+
+  // Normal mode: show challenge button + persist + milestone
   if (direction !== 'skip') {
+    document.getElementById('challenge-result-btn').classList.add('show');
+    document.getElementById('challenge-result-btn').textContent = '⚔️ Challenge a Friend';
+    document.getElementById('challenge-result-btn').style.color = '';
+    _friendPickerOpen = false;
+    document.getElementById('friend-picker').style.display = 'none';
     AUTH.saveTrade(trade)
       .then(() => AUTH.getTrades())
       .then(allTrades => {

@@ -8,8 +8,10 @@ app.use(cors());
 app.use(express.json());
 
 // API routes
-app.use('/api/auth',   require('./routes/auth'));
-app.use('/api/trades', require('./routes/trades'));
+app.use('/api/auth',       require('./routes/auth'));
+app.use('/api/trades',     require('./routes/trades'));
+app.use('/api/friends',    require('./routes/friends'));
+app.use('/api/challenges', require('./routes/challenges'));
 
 // Serve the frontend
 app.get('*', (req, res) => {
