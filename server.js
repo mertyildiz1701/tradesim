@@ -12,6 +12,12 @@ app.use('/api/auth',       require('./routes/auth'));
 app.use('/api/trades',     require('./routes/trades'));
 app.use('/api/friends',    require('./routes/friends'));
 app.use('/api/challenges', require('./routes/challenges'));
+app.use('/api/admin',      require('./routes/admin'));
+
+// Admin panel
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
 
 // Serve the frontend
 app.get('*', (req, res) => {

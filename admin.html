@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TradeSim Admin</title>
+  <style>
+    :root {
+      --bg:#0d1117; --surface:#161b22; --border:#30363d;
+      --text:#e6edf3; --muted:#8b949e;
+      --green:#3fb950; --red:#f85149; --blue:#58a6ff;
+      --yellow:#e3b341; --purple:#bc8cff; --orange:#f0883e;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+
+    /* ── LOGIN ── */
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .login-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:36px;width:380px;max-width:100%;display:flex;flex-direction:column;gap:16px;}
+    .login-logo{font-size:22px;font-weight:800;color:var(--red);text-align:center;}
+    .login-sub{font-size:12px;color:var(--muted);text-align:center;}
+    .login-input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:7px;font-size:14px;outline:none;font-family:inherit;}
+    .login-input:focus{border-color:var(--red);}
+    .login-btn{width:100%;padding:13px;border-radius:7px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+    .login-btn:hover{background:#ff6b63;}
+    .login-err{color:var(--red);font-size:12px;min-height:14px;text-align:center;}
+
+    /* ── LAYOUT ── */
+    .admin-wrap{display:none;flex-direction:column;min-height:100vh;}
+    .admin-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+    .admin-logo{font-size:16px;font-weight:800;color:var(--red);}
+    .admin-user{font-size:12px;color:var(--muted);}
+    .btn-logout{padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;}
+    .btn-logout:hover{color:var(--red);border-color:var(--red);}
+    .admin-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;}
+    .nav-tab{padding:10px 14px;border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all .12s;}
+    .nav-tab:hover{color:var(--text);}
+    .nav-tab.on{color:var(--red);border-bottom-color:var(--red);}
+    .admin-body{flex:1;padding:24px;max-width:1100px;width:100%;margin:0 auto;}
+
+    /* ── STATS ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
+    .stat-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;}
+    .stat-card-value{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;}
+
+    /* ── TABLE ── */
+    .section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px;}
+    .search-row{display:flex;gap:10px;margin-bottom:12px;}
+    .search-input{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:13px;outline:none;font-family:inherit;}
+    .search-input:focus{border-color:var(--blue);}
+    .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:12px;}
+    th{padding:10px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;}
+    td{padding:10px 14px;border-bottom:1px solid rgba(48,54,61,.5);white-space:nowrap;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:rgba(255,255,255,.02);}
+    .badge{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;}
+    .badge-green{background:rgba(63,185,80,.15);color:var(--green);}
+    .badge-red{background:rgba(248,81,73,.15);color:var(--red);}
+    .badge-muted{background:rgba(139,148,158,.12);color:var(--muted);}
+    .btn-del{padding:3px 9px;border-radius:4px;border:1px solid rgba(248,81,73,.3);background:transparent;color:var(--red);font-size:10px;font-weight:700;cursor:pointer;}
+    .btn-del:hover{background:rgba(248,81,73,.1);}
+
+    /* ── ACTIVITY ── */
+    .activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    @media(max-width:700px){.activity-grid{grid-template-columns:1fr;}}
+    .activity-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+    .activity-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);}
+    .activity-row{padding:9px 16px;border-bottom:1px solid rgba(48,54,61,.4);font-size:11px;display:flex;align-items:center;gap:8px;}
+    .activity-row:last-child{border-bottom:none;}
+    .act-user{font-weight:700;color:var(--text);min-width:80px;}
+    .act-info{flex:1;color:var(--muted);}
+    .act-time{font-size:10px;color:var(--border);}
+
+    /* ── TOP TRADERS ── */
+    .top-traders{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:24px;}
+    .top-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+    .top-rank{font-size:18px;width:24px;text-align:center;flex-shrink:0;}
+    .top-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+    .top-sub{font-size:10px;color:var(--muted);}
+
+    /* ── SPINNER ── */
+    .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;margin:40px auto;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .empty{text-align:center;padding:40px;color:var(--muted);font-size:12px;}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">⚙️ TradeSim Admin</div>
+    <div class="login-sub">Restricted access — administrators only</div>
+    <input class="login-input" id="l-user" type="text"     placeholder="Admin username" autocomplete="username"         onkeydown="if(event.key==='Enter')adminLogin()">
+    <input class="login-input" id="l-pass" type="password" placeholder="Admin password" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()">
+    <div class="login-err" id="l-err"></div>
+    <button class="login-btn" id="l-btn" onclick="adminLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="admin-wrap">
+  <div class="admin-header">
+    <div class="admin-logo">⚙️ TradeSim Admin</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="admin-user" id="admin-user-label"></span>
+      <button class="btn-logout" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+  <div class="admin-nav">
+    <button class="nav-tab on" id="tab-overview"  onclick="showTab('overview')">📊 Overview</button>
+    <button class="nav-tab"    id="tab-users"     onclick="showTab('users')">👥 Users</button>
+    <button class="nav-tab"    id="tab-activity"  onclick="showTab('activity')">⚡ Activity</button>
+  </div>
+  <div class="admin-body" id="admin-body">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<script>
+let _adminToken = null;
+let _currentTab = 'overview';
+
+// ── AUTH ──
+async function adminLogin() {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  const btn = document.getElementById('l-btn');
+  const err = document.getElementById('l-err');
+  err.textContent = '';
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  try {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p }),
+    });
+    const data = await res.json();
+    if (!res.ok) { err.textContent = data.error || 'Login failed.'; btn.disabled = false; btn.textContent = 'Sign In'; return; }
+
+    _adminToken = data.token;
+    try { sessionStorage.setItem('admin_token', _adminToken); } catch(_) {}
+    document.getElementById('admin-user-label').textContent = `Logged in as ${u}`;
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'flex';
+    showTab('overview');
+  } catch {
+    err.textContent = 'Network error.';
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+}
+
+function adminLogout() {
+  _adminToken = null;
+  try { sessionStorage.removeItem('admin_token'); } catch(_) {}
+  document.getElementById('login-wrap').style.display = 'flex';
+  document.getElementById('admin-wrap').style.display = 'none';
+  document.getElementById('l-pass').value = '';
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${_adminToken}`, ...(opts.headers || {}) },
+  });
+  if (res.status === 401) { adminLogout(); return null; }
+  return res.json();
+}
+
+// ── TABS ──
+function showTab(tab) {
+  _currentTab = tab;
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('on'));
+  document.getElementById(`tab-${tab}`).classList.add('on');
+  document.getElementById('admin-body').innerHTML = '<div class="spinner"></div>';
+  if (tab === 'overview')  renderOverview();
+  else if (tab === 'users')     renderUsers();
+  else if (tab === 'activity')  renderActivity();
+}
+
+// ── OVERVIEW ──
+async function renderOverview() {
+  const stats = await api('/api/admin/stats');
+  if (!stats) return;
+
+  const statColor = (label) => {
+    if (label.includes('Today') || label.includes('Active')) return 'var(--blue)';
+    if (label === 'Total Users') return 'var(--green)';
+    if (label === 'Total Trades') return 'var(--yellow)';
+    if (label === 'Challenges') return 'var(--purple)';
+    return 'var(--text)';
+  };
+
+  const cards = [
+    { label: 'Total Users',    value: stats.totalUsers },
+    { label: 'Total Trades',   value: stats.totalTrades },
+    { label: 'Challenges',     value: stats.totalChallenges },
+    { label: 'New Users Today', value: stats.newUsersToday },
+    { label: 'Active Today',   value: stats.activeUsersToday },
+  ].map(c => `
+    <div class="stat-card">
+      <div class="stat-card-label">${c.label}</div>
+      <div class="stat-card-value" style="color:${statColor(c.label)}">${c.value}</div>
+    </div>`).join('');
+
+  let topHtml = '';
+  if (stats.topTraders && stats.topTraders.length) {
+    const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+    topHtml = `
+      <div class="section-title" style="margin-top:8px;">Top Traders by Volume</div>
+      <div class="top-traders">
+        ${stats.topTraders.map((t, i) => `
+          <div class="top-card">
+            <div class="top-rank">${medals[i] || (i+1)}</div>
+            <div>
+              <div class="top-name">${t.username}</div>
+              <div class="top-sub">${t.trades} trades · ${t.trades > 0 ? Math.round(t.wins/t.trades*100) : '—'}% WR</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  document.getElementById('admin-body').innerHTML = `<div class="stats-grid">${cards}</div>${topHtml}`;
+}
+
+// ── USERS ──
+let _allUsers = [];
+async function renderUsers() {
+  _allUsers = await api('/api/admin/users');
+  if (!_allUsers) return;
+  renderUserTable(_allUsers);
+}
+
+function renderUserTable(users) {
+  const rows = users.map(u => {
+    const wr = u.winRate !== null ? `<span style="color:${u.winRate >= 50 ? 'var(--green)' : 'var(--red)'}">${u.winRate}%</span>` : '<span style="color:var(--muted)">—</span>';
+    const joined    = new Date(u.createdAt).toLocaleDateString();
+    const lastActive = u.lastActive ? timeAgo(new Date(u.lastActive)) : 'never';
+    return `<tr>
+      <td><strong>${esc(u.username)}</strong></td>
+      <td style="font-variant-numeric:tabular-nums">${u.tradeCount}</td>
+      <td>${wr}</td>
+      <td style="color:var(--muted)">${joined}</td>
+      <td style="color:var(--muted)">${lastActive}</td>
+      <td><button class="btn-del" onclick="deleteUser(${u.id},'${esc(u.username)}')">Delete</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">No users yet.</td></tr>';
+
+  document.getElementById('admin-body').innerHTML = `
+    <div class="search-row">
+      <input class="search-input" id="user-search" placeholder="Search username…" oninput="filterUsers(this.value)">
+      <div style="font-size:12px;color:var(--muted);align-self:center;">${_allUsers.length} user${_allUsers.length!==1?'s':''}</div>
+    </div>
+    <div class="table-wrap">
+      <table id="user-table">
+        <thead><tr>
+          <th>Username</th><th>Trades</th><th>Win Rate</th><th>Joined</th><th>Last Active</th><th></th>
+        </tr></thead>
+        <tbody id="user-tbody">${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function filterUsers(q) {
+  const filtered = _allUsers.filter(u => u.username.toLowerCase().includes(q.toLowerCase()));
+  const rows = filtered.map(u => {
+    const wr = u.winRate !== null ? `<span style="color:${u.winRate>=50?'var(--green)':'var(--red)'}">${u.winRate}%</span>` : '<span style="color:var(--muted)">—</span>';
+    return `<tr>
+      <td><strong>${esc(u.username)}</strong></td>
+      <td>${u.tradeCount}</td><td>${wr}</td>
+      <td style="color:var(--muted)">${new Date(u.createdAt).toLocaleDateString()}</td>
+      <td style="color:var(--muted)">${u.lastActive ? timeAgo(new Date(u.lastActive)) : 'never'}</td>
+      <td><button class="btn-del" onclick="deleteUser(${u.id},'${esc(u.username)}')">Delete</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">No results.</td></tr>';
+  document.getElementById('user-tbody').innerHTML = rows;
+}
+
+async function deleteUser(id, username) {
+  if (!confirm(`Delete user "${username}" and ALL their trades/data?\n\nThis cannot be undone.`)) return;
+  const res = await api(`/api/admin/users/${id}`, { method: 'DELETE' });
+  if (res && res.ok) {
+    _allUsers = _allUsers.filter(u => u.id !== id);
+    renderUserTable(_allUsers);
+  } else {
+    alert('Failed to delete user.');
+  }
+}
+
+// ── ACTIVITY ──
+async function renderActivity() {
+  const data = await api('/api/admin/activity');
+  if (!data) return;
+
+  const tradeRows = (data.recentTrades || []).map(t => {
+    const won  = t.won;
+    const sign = t.pct >= 0 ? '+' : '';
+    const col  = won ? 'var(--green)' : 'var(--red)';
+    const dir  = t.direction === 'long' ? '▲ L' : '▼ S';
+    return `<div class="activity-row">
+      <span class="act-user">${esc(t.username)}</span>
+      <span class="act-info">${dir} · ${t.hit.toUpperCase()}</span>
+      <span style="color:${col};font-weight:700;font-size:11px;">${sign}${parseFloat(t.pct).toFixed(2)}%</span>
+      <span class="act-time">${timeAgo(new Date(t.created_at))}</span>
+    </div>`;
+  }).join('') || '<div class="empty">No trades yet.</div>';
+
+  const regRows = (data.recentRegistrations || []).map(r =>
+    `<div class="activity-row">
+      <span class="act-user">${esc(r.username)}</span>
+      <span class="act-info">joined</span>
+      <span class="act-time">${timeAgo(new Date(r.created_at))}</span>
+    </div>`
+  ).join('') || '<div class="empty">No registrations yet.</div>';
+
+  document.getElementById('admin-body').innerHTML = `
+    <div class="activity-grid">
+      <div class="activity-card">
+        <div class="activity-head">Recent Trades</div>
+        ${tradeRows}
+      </div>
+      <div class="activity-card">
+        <div class="activity-head">Recent Registrations</div>
+        ${regRows}
+      </div>
+    </div>`;
+}
+
+// ── UTILS ──
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60)    return `${s}s ago`;
+  if (s < 3600)  return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+// ── INIT ──
+(function() {
+  try { _adminToken = sessionStorage.getItem('admin_token'); } catch(_) {}
+  if (_adminToken) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('admin-wrap').style.display = 'flex';
+    showTab('overview');
+  }
+})();
+</script>
+</body>
+</html>
