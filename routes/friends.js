@@ -2,7 +2,6 @@ const router      = require('express').Router();
 const db          = require('../db');
 const requireAuth = require('../lib/requireAuth');
 
-// Helper: compute grade from trades array
 function computeGrade(trades) {
   if (!trades.length) return null;
   const wins   = trades.filter(t => t.won).length;
@@ -19,166 +18,173 @@ function computeGrade(trades) {
   return sc >= 9 ? 'A' : sc >= 7 ? 'B' : sc >= 5 ? 'C' : sc >= 3 ? 'D' : 'F';
 }
 
-// GET /api/friends — accepted friends + their stats
-router.get('/', requireAuth, (req, res) => {
+async function tradeStats(userId) {
+  const result = await db.query(
+    `SELECT won, pct, tp, sl, entry FROM trades WHERE user_id = $1 AND direction != 'skip'`,
+    [userId]
+  );
+  const trades = result.rows.map(t => ({
+    won: t.won,
+    pct: parseFloat(t.pct),
+    tp:  t.tp != null ? parseFloat(t.tp) : null,
+    sl:  t.sl != null ? parseFloat(t.sl) : null,
+    entry: parseFloat(t.entry),
+  }));
+  const wins   = trades.filter(t => t.won).length;
+  const total  = trades.length;
+  const wr     = total > 0 ? Math.round(wins / total * 100) : null;
+  const withRR = trades.filter(t => t.tp && t.sl && t.tp > 0 && t.sl > 0);
+  const avgRR  = withRR.length
+    ? Math.round(withRR.reduce((s, t) => s + Math.abs(t.tp - t.entry) / Math.abs(t.sl - t.entry), 0) / withRR.length * 100) / 100
+    : null;
+  return { trades, total, wins, losses: total - wins, winRate: wr, avgRR, grade: total > 0 ? computeGrade(trades) : null };
+}
+
+// GET /api/friends
+router.get('/', requireAuth, async (req, res) => {
   const uid = req.user.userId;
-  const rows = db.prepare(`
-    SELECT f.id AS friendship_id,
-           CASE WHEN f.requester_id = ? THEN u2.id   ELSE u1.id       END AS friend_id,
-           CASE WHEN f.requester_id = ? THEN u2.username ELSE u1.username END AS username
-    FROM friends f
-    JOIN users u1 ON u1.id = f.requester_id
-    JOIN users u2 ON u2.id = f.addressee_id
-    WHERE (f.requester_id = ? OR f.addressee_id = ?) AND f.status = 'accepted'
-  `).all(uid, uid, uid, uid);
+  try {
+    const rows = await db.query(`
+      SELECT f.id AS friendship_id,
+             CASE WHEN f.requester_id = $1 THEN u2.id       ELSE u1.id       END AS friend_id,
+             CASE WHEN f.requester_id = $1 THEN u2.username  ELSE u1.username  END AS username
+      FROM friends f
+      JOIN users u1 ON u1.id = f.requester_id
+      JOIN users u2 ON u2.id = f.addressee_id
+      WHERE (f.requester_id = $1 OR f.addressee_id = $1) AND f.status = 'accepted'
+    `, [uid]);
 
-  const result = rows.map(f => {
-    const trades = db.prepare(
-      `SELECT won, pct, tp, sl, entry FROM trades WHERE user_id = ? AND direction != 'skip'`
-    ).all(f.friend_id);
-    const wins   = trades.filter(t => t.won).length;
-    const total  = trades.length;
-    const wr     = total > 0 ? Math.round(wins / total * 100) : null;
-    const withRR = trades.filter(t => t.tp && t.sl && t.tp > 0 && t.sl > 0);
-    const avgRR  = withRR.length
-      ? Math.round(withRR.reduce((s, t) => s + Math.abs(t.tp - t.entry) / Math.abs(t.sl - t.entry), 0) / withRR.length * 100) / 100
-      : null;
-    return {
-      friendshipId: f.friendship_id,
-      userId:       f.friend_id,
-      username:     f.username,
-      totalTrades:  total,
-      wins, losses: total - wins,
-      winRate:      wr,
-      avgRR,
-      grade:        total > 0 ? computeGrade(trades) : null,
-    };
-  });
+    const result = await Promise.all(rows.rows.map(async f => {
+      const stats = await tradeStats(f.friend_id);
+      return { friendshipId: f.friendship_id, userId: f.friend_id, username: f.username, ...stats };
+    }));
 
-  res.json(result);
+    res.json(result);
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
-// GET /api/friends/leaderboard — you + all friends ranked
-router.get('/leaderboard', requireAuth, (req, res) => {
+// GET /api/friends/leaderboard
+router.get('/leaderboard', requireAuth, async (req, res) => {
   const uid = req.user.userId;
+  try {
+    const friendRows = await db.query(`
+      SELECT CASE WHEN requester_id = $1 THEN addressee_id ELSE requester_id END AS friend_id
+      FROM friends WHERE (requester_id = $1 OR addressee_id = $1) AND status = 'accepted'
+    `, [uid]);
 
-  // Collect IDs: self + friends
-  const friendRows = db.prepare(`
-    SELECT CASE WHEN requester_id = ? THEN addressee_id ELSE requester_id END AS friend_id
-    FROM friends WHERE (requester_id = ? OR addressee_id = ?) AND status = 'accepted'
-  `).all(uid, uid, uid);
-  const ids = [uid, ...friendRows.map(r => r.friend_id)];
+    const ids = [uid, ...friendRows.rows.map(r => r.friend_id)];
+    const board = await Promise.all(ids.map(async id => {
+      const user  = await db.query('SELECT username FROM users WHERE id = $1', [id]);
+      const stats = await tradeStats(id);
+      return { userId: id, username: user.rows[0]?.username, ...stats, isYou: id === uid };
+    }));
 
-  const board = ids.map(id => {
-    const user   = db.prepare('SELECT username FROM users WHERE id = ?').get(id);
-    const trades = db.prepare(
-      `SELECT won, pct, tp, sl, entry FROM trades WHERE user_id = ? AND direction != 'skip'`
-    ).all(id);
-    const wins   = trades.filter(t => t.won).length;
-    const total  = trades.length;
-    const wr     = total >= 5 ? Math.round(wins / total * 100) : null;
-    const withRR = trades.filter(t => t.tp && t.sl && t.tp > 0 && t.sl > 0);
-    const avgRR  = withRR.length
-      ? Math.round(withRR.reduce((s, t) => s + Math.abs(t.tp - t.entry) / Math.abs(t.sl - t.entry), 0) / withRR.length * 100) / 100
-      : null;
-    return {
-      userId: id, username: user.username,
-      totalTrades: total, wins, losses: total - wins,
-      winRate: wr, avgRR,
-      grade: total >= 5 ? computeGrade(trades) : null,
-      isYou: id === uid,
-    };
-  });
+    board.sort((a, b) => {
+      if (a.winRate === null && b.winRate === null) return 0;
+      if (a.winRate === null) return 1;
+      if (b.winRate === null) return -1;
+      return b.winRate - a.winRate;
+    });
 
-  // Sort: ranked users first (by win rate), then unranked
-  board.sort((a, b) => {
-    if (a.winRate === null && b.winRate === null) return 0;
-    if (a.winRate === null) return 1;
-    if (b.winRate === null) return -1;
-    return b.winRate - a.winRate;
-  });
-
-  res.json(board);
+    res.json(board);
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
-// GET /api/friends/requests — pending incoming + outgoing
-router.get('/requests', requireAuth, (req, res) => {
+// GET /api/friends/requests
+router.get('/requests', requireAuth, async (req, res) => {
   const uid = req.user.userId;
-  const incoming = db.prepare(`
-    SELECT f.id, u.username, f.created_at FROM friends f
-    JOIN users u ON u.id = f.requester_id
-    WHERE f.addressee_id = ? AND f.status = 'pending' ORDER BY f.created_at DESC
-  `).all(uid);
-  const outgoing = db.prepare(`
-    SELECT f.id, u.username, f.created_at FROM friends f
-    JOIN users u ON u.id = f.addressee_id
-    WHERE f.requester_id = ? AND f.status = 'pending' ORDER BY f.created_at DESC
-  `).all(uid);
-  res.json({ incoming, outgoing });
+  try {
+    const incoming = await db.query(`
+      SELECT f.id, u.username, f.created_at FROM friends f
+      JOIN users u ON u.id = f.requester_id
+      WHERE f.addressee_id = $1 AND f.status = 'pending' ORDER BY f.created_at DESC
+    `, [uid]);
+    const outgoing = await db.query(`
+      SELECT f.id, u.username, f.created_at FROM friends f
+      JOIN users u ON u.id = f.addressee_id
+      WHERE f.requester_id = $1 AND f.status = 'pending' ORDER BY f.created_at DESC
+    `, [uid]);
+    res.json({ incoming: incoming.rows, outgoing: outgoing.rows });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
-// GET /api/friends/notifications — badge counts
-router.get('/notifications', requireAuth, (req, res) => {
+// GET /api/friends/notifications
+router.get('/notifications', requireAuth, async (req, res) => {
   const uid = req.user.userId;
-  const pendingRequests   = db.prepare(
-    `SELECT COUNT(*) AS n FROM friends WHERE addressee_id = ? AND status = 'pending'`
-  ).get(uid).n;
-  const pendingChallenges = db.prepare(
-    `SELECT COUNT(*) AS n FROM challenges WHERE receiver_id = ? AND status = 'pending'`
-  ).get(uid).n;
-  res.json({ pendingRequests, pendingChallenges, total: pendingRequests + pendingChallenges });
+  try {
+    const r1 = await db.query(`SELECT COUNT(*) AS n FROM friends    WHERE addressee_id = $1 AND status = 'pending'`,    [uid]);
+    const r2 = await db.query(`SELECT COUNT(*) AS n FROM challenges WHERE receiver_id  = $1 AND status = 'pending'`,    [uid]);
+    const pr = parseInt(r1.rows[0].n, 10);
+    const pc = parseInt(r2.rows[0].n, 10);
+    res.json({ pendingRequests: pr, pendingChallenges: pc, total: pr + pc });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
-// POST /api/friends/request — send request by username
-router.post('/request', requireAuth, (req, res) => {
+// POST /api/friends/request
+router.post('/request', requireAuth, async (req, res) => {
   const { username } = req.body || {};
   if (!username) return res.status(400).json({ error: 'Username required.' });
-  const target = db.prepare('SELECT id FROM users WHERE username = ? COLLATE NOCASE').get(username.trim());
-  if (!target) return res.status(404).json({ error: 'User not found.' });
-  if (target.id === req.user.userId) return res.status(400).json({ error: "You can't add yourself." });
-  const existing = db.prepare(`
-    SELECT status FROM friends
-    WHERE (requester_id = ? AND addressee_id = ?) OR (requester_id = ? AND addressee_id = ?)
-  `).get(req.user.userId, target.id, target.id, req.user.userId);
-  if (existing) {
-    if (existing.status === 'accepted') return res.status(409).json({ error: 'Already friends.' });
-    if (existing.status === 'pending')  return res.status(409).json({ error: 'Request already sent or pending.' });
-    // declined → allow re-request by updating
-    db.prepare(`UPDATE friends SET status='pending', requester_id=?, addressee_id=?
-                WHERE (requester_id=? AND addressee_id=?) OR (requester_id=? AND addressee_id=?)`)
-      .run(req.user.userId, target.id, req.user.userId, target.id, target.id, req.user.userId);
-    return res.json({ ok: true });
-  }
-  db.prepare('INSERT INTO friends (requester_id, addressee_id) VALUES (?, ?)').run(req.user.userId, target.id);
-  res.json({ ok: true });
+  try {
+    const target = await db.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username.trim()]);
+    if (!target.rows.length) return res.status(404).json({ error: 'User not found.' });
+    const tId = target.rows[0].id;
+    if (tId === req.user.userId) return res.status(400).json({ error: "You can't add yourself." });
+
+    const existing = await db.query(`
+      SELECT status FROM friends
+      WHERE (requester_id = $1 AND addressee_id = $2) OR (requester_id = $2 AND addressee_id = $1)
+    `, [req.user.userId, tId]);
+
+    if (existing.rows.length) {
+      const s = existing.rows[0].status;
+      if (s === 'accepted') return res.status(409).json({ error: 'Already friends.' });
+      if (s === 'pending')  return res.status(409).json({ error: 'Request already pending.' });
+      await db.query(`UPDATE friends SET status='pending', requester_id=$1, addressee_id=$2
+                      WHERE (requester_id=$1 AND addressee_id=$2) OR (requester_id=$2 AND addressee_id=$1)`,
+                     [req.user.userId, tId]);
+      return res.json({ ok: true });
+    }
+
+    await db.query('INSERT INTO friends (requester_id, addressee_id) VALUES ($1, $2)', [req.user.userId, tId]);
+    res.json({ ok: true });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
 // POST /api/friends/accept/:id
-router.post('/accept/:id', requireAuth, (req, res) => {
-  const row = db.prepare(
-    `SELECT id FROM friends WHERE id = ? AND addressee_id = ? AND status = 'pending'`
-  ).get(req.params.id, req.user.userId);
-  if (!row) return res.status(404).json({ error: 'Request not found.' });
-  db.prepare(`UPDATE friends SET status = 'accepted' WHERE id = ?`).run(req.params.id);
-  res.json({ ok: true });
+router.post('/accept/:id', requireAuth, async (req, res) => {
+  try {
+    const row = await db.query(
+      `SELECT id FROM friends WHERE id = $1 AND addressee_id = $2 AND status = 'pending'`,
+      [req.params.id, req.user.userId]
+    );
+    if (!row.rows.length) return res.status(404).json({ error: 'Request not found.' });
+    await db.query(`UPDATE friends SET status = 'accepted' WHERE id = $1`, [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
 // POST /api/friends/decline/:id
-router.post('/decline/:id', requireAuth, (req, res) => {
-  const row = db.prepare(
-    `SELECT id FROM friends WHERE id = ? AND addressee_id = ? AND status = 'pending'`
-  ).get(req.params.id, req.user.userId);
-  if (!row) return res.status(404).json({ error: 'Request not found.' });
-  db.prepare(`UPDATE friends SET status = 'declined' WHERE id = ?`).run(req.params.id);
-  res.json({ ok: true });
+router.post('/decline/:id', requireAuth, async (req, res) => {
+  try {
+    const row = await db.query(
+      `SELECT id FROM friends WHERE id = $1 AND addressee_id = $2 AND status = 'pending'`,
+      [req.params.id, req.user.userId]
+    );
+    if (!row.rows.length) return res.status(404).json({ error: 'Request not found.' });
+    await db.query(`UPDATE friends SET status = 'declined' WHERE id = $1`, [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
-// DELETE /api/friends/:id — remove friendship
-router.delete('/:id', requireAuth, (req, res) => {
-  db.prepare(
-    `DELETE FROM friends WHERE id = ? AND (requester_id = ? OR addressee_id = ?)`
-  ).run(req.params.id, req.user.userId, req.user.userId);
-  res.json({ ok: true });
+// DELETE /api/friends/:id
+router.delete('/:id', requireAuth, async (req, res) => {
+  try {
+    await db.query(
+      `DELETE FROM friends WHERE id = $1 AND (requester_id = $2 OR addressee_id = $2)`,
+      [req.params.id, req.user.userId]
+    );
+    res.json({ ok: true });
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error.' }); }
 });
 
 module.exports = router;

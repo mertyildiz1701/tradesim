@@ -1,13 +1,10 @@
-const router  = require('express').Router();
-const bcrypt  = require('bcryptjs');
-const jwt     = require('jsonwebtoken');
-const db      = require('../db');
+const router = require('express').Router();
+const bcrypt = require('bcryptjs');
+const jwt    = require('jsonwebtoken');
+const db     = require('../db');
 
 const secret = () => process.env.JWT_SECRET || 'tradesim-dev-secret-change-in-production';
-
-function sign(payload) {
-  return jwt.sign(payload, secret(), { expiresIn: '30d' });
-}
+const sign   = payload => jwt.sign(payload, secret(), { expiresIn: '30d' });
 
 router.post('/register', async (req, res) => {
   const { username, password } = req.body || {};
@@ -18,12 +15,15 @@ router.post('/register', async (req, res) => {
 
   const clean = username.trim();
   try {
-    const exists = db.prepare('SELECT id FROM users WHERE username = ?').get(clean);
-    if (exists) return res.status(409).json({ error: 'Username already taken — try signing in.' });
+    const exists = await db.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [clean]);
+    if (exists.rows.length) return res.status(409).json({ error: 'Username already taken — try signing in.' });
 
     const hash   = await bcrypt.hash(password, 10);
-    const result = db.prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)').run(clean, hash);
-    const token  = sign({ userId: result.lastInsertRowid, username: clean });
+    const result = await db.query(
+      'INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING id',
+      [clean, hash]
+    );
+    const token = sign({ userId: result.rows[0].id, username: clean });
     res.json({ token, username: clean });
   } catch (e) {
     console.error(e);
@@ -37,10 +37,14 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Enter username and password.' });
 
   try {
-    const user = db.prepare('SELECT id, username, password_hash FROM users WHERE username = ?').get(username.trim());
-    if (!user) return res.status(401).json({ error: 'No account found with that username.' });
+    const result = await db.query(
+      'SELECT id, username, password_hash FROM users WHERE LOWER(username) = LOWER($1)',
+      [username.trim()]
+    );
+    if (!result.rows.length) return res.status(401).json({ error: 'No account found with that username.' });
 
-    const ok = await bcrypt.compare(password, user.password_hash);
+    const user = result.rows[0];
+    const ok   = await bcrypt.compare(password, user.password_hash);
     if (!ok) return res.status(401).json({ error: 'Wrong password.' });
 
     const token = sign({ userId: user.id, username: user.username });
