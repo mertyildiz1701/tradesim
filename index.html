@@ -2146,29 +2146,34 @@ function endSim(hit, exitPrice, triggerCandle, endStep) {
   showResult(trade, feedback);
 
   // ── Reveal card ──
-  if (hit !== 'skip' && S.round.realStartTs) {
-    const fmt = ts => new Date(ts * 1000).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-    const assetNames = { BTCUSDT:'Bitcoin (BTC)', ETHUSDT:'Ethereum (ETH)', SOLUSDT:'Solana (SOL)', BNBUSDT:'BNB', ADAUSDT:'Cardano (ADA)', XRPUSDT:'XRP', DOGEUSDT:'Dogecoin (DOGE)', AVAXUSDT:'Avalanche (AVAX)', LINKUSDT:'Chainlink (LINK)', DOTUSDT:'Polkadot (DOT)' };
-    const name = assetNames[S.round.symbol] || S.round.symbol;
-    const tfLabel = (STYLES[S.style]?.tfLabel || {})[S.round.interval] || S.round.interval;
-    document.getElementById('reveal-card-body').innerHTML =
-      `<div class="reveal-card-row"><span class="reveal-card-label">Asset</span><span class="reveal-card-val">${name}</span></div>
-       <div class="reveal-card-row"><span class="reveal-card-label">Timeframe</span><span class="reveal-card-val">${tfLabel}</span></div>
-       <div class="reveal-card-row"><span class="reveal-card-label">Period</span><span class="reveal-card-val">${fmt(S.round.realStartTs)} – ${fmt(S.round.realEndTs)}</span></div>
-       <div class="reveal-card-row"><span class="reveal-card-label">Entry price</span><span class="reveal-card-val">${fmtPrice(entry)}</span></div>`;
-    document.getElementById('reveal-card').classList.add('show');
-  }
+  try {
+    if (hit !== 'skip' && S.round && S.round.realStartTs) {
+      const fmt = ts => new Date(ts * 1000).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+      const assetNames = { BTCUSDT:'Bitcoin (BTC)', ETHUSDT:'Ethereum (ETH)', SOLUSDT:'Solana (SOL)', BNBUSDT:'BNB', ADAUSDT:'Cardano (ADA)', XRPUSDT:'XRP', DOGEUSDT:'Dogecoin (DOGE)', AVAXUSDT:'Avalanche (AVAX)', LINKUSDT:'Chainlink (LINK)', DOTUSDT:'Polkadot (DOT)' };
+      const name = assetNames[S.round.symbol] || S.round.symbol;
+      const styleCfg = STYLES[S.style] || {};
+      const tfLabel = (styleCfg.tfLabel || {})[S.round.interval] || S.round.interval;
+      document.getElementById('reveal-card-body').innerHTML =
+        `<div class="reveal-card-row"><span class="reveal-card-label">Asset</span><span class="reveal-card-val">${name}</span></div>
+         <div class="reveal-card-row"><span class="reveal-card-label">Timeframe</span><span class="reveal-card-val">${tfLabel}</span></div>
+         <div class="reveal-card-row"><span class="reveal-card-label">Period</span><span class="reveal-card-val">${fmt(S.round.realStartTs)} – ${fmt(S.round.realEndTs)}</span></div>
+         <div class="reveal-card-row"><span class="reveal-card-label">Entry price</span><span class="reveal-card-val">${fmtPrice(entry)}</span></div>`;
+      document.getElementById('reveal-card').classList.add('show');
+    }
+  } catch(e) { console.error('Reveal card error:', e); }
 
   // ── Pattern card ──
-  if (hit !== 'skip') {
-    const pat = detectChartPattern(S.round.histCandles);
-    if (pat) {
-      document.getElementById('pattern-card-body').innerHTML =
-        `<div class="pattern-name" style="color:${pat.color}">${pat.emoji} ${pat.name}</div>
-         <div class="pattern-desc">${pat.desc}</div>`;
-      document.getElementById('pattern-card').classList.add('show');
+  try {
+    if (hit !== 'skip' && S.round && S.round.histCandles) {
+      const pat = detectChartPattern(S.round.histCandles);
+      if (pat) {
+        document.getElementById('pattern-card-body').innerHTML =
+          `<div class="pattern-name" style="color:${pat.color}">${pat.emoji} ${pat.name}</div>
+           <div class="pattern-desc">${pat.desc}</div>`;
+        document.getElementById('pattern-card').classList.add('show');
+      }
     }
-  }
+  } catch(e) { console.error('Pattern card error:', e); }
 
   addHistory(trade);
   updateStats();
@@ -2763,7 +2768,21 @@ function showAnalysis() {
     </div>` : '';
 
   // ── Written analysis ──
-  const analysis = buildWrittenAnalysis({ real, wr, avgWin, avgLoss, ev, avgRR, grade, longs, shorts, longWR, shortWR, noSL, noTP, badRR, tpHits, slHits, exps, bestWS, worstLS, statL10, statP10, byStyle });
+  let analysis = '';
+  try { analysis = buildWrittenAnalysis({ real, wr, avgWin, avgLoss, ev, avgRR, grade, longs, shorts, longWR, shortWR, noSL, noTP, badRR, tpHits, slHits, exps, bestWS, worstLS, statL10, statP10, byStyle }); }
+  catch(e) { console.error('buildWrittenAnalysis error:', e); analysis = '<p style="color:var(--red)">Analysis unavailable.</p>'; }
+
+  // ── Psychology patterns (pre-computed, never inline) ──
+  let psychHtml = '';
+  try {
+    psychHtml = detectPsychPatterns(real).map(p => {
+      const bc = p.color === 'var(--green)' ? 'rgba(63,185,80,.25)' : p.color === 'var(--red)' ? 'rgba(248,81,73,.2)' : 'rgba(227,179,65,.2)';
+      return `<div class="psych-card" style="margin-bottom:8px;border-color:${bc};">
+        <div class="psych-head"><span style="font-size:18px;">${p.icon}</span><span style="color:${p.color};">${p.name}</span></div>
+        <div class="psych-body">${p.desc}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { console.error('detectPsychPatterns error:', e); }
 
   // ── Render ──
   const fmtEv = `${ev>=0?'+':''}${ev.toFixed(2)}%`;
@@ -2857,11 +2876,7 @@ function showAnalysis() {
 
       <div>
         <div class="an-section-title">🧠 Psychological Patterns</div>
-        ${detectPsychPatterns(real).map(p => `
-          <div class="psych-card" style="margin-bottom:8px;border-color:${p.color === 'var(--green)' ? 'rgba(63,185,80,.25)' : p.color === 'var(--red)' ? 'rgba(248,81,73,.2)' : 'rgba(227,179,65,.2)'};">
-            <div class="psych-head"><span style="font-size:18px;">${p.icon}</span><span style="color:${p.color};">${p.name}</span></div>
-            <div class="psych-body">${p.desc}</div>
-          </div>`).join('')}
+        ${psychHtml}
       </div>
 
       <div>
@@ -2888,9 +2903,20 @@ function showAnalysis() {
           <div class="badge-icon">${a.icon}</div>
           <div class="badge-name">${a.name}</div>
         </div>`).join('');
-    });
+    }).catch(() => {});
 
-  }).catch(() => {});
+  }).catch(err => {
+    console.error('showAnalysis error:', err);
+    content.innerHTML = `
+      <div class="an-header">
+        <div><div class="milestone-title">📊 My Analysis</div></div>
+        <button class="an-close" onclick="document.getElementById('analysis-modal').style.display='none'">✕ Close</button>
+      </div>
+      <div style="padding:40px;text-align:center;color:var(--red);font-size:13px;">
+        Failed to load analysis. Check console for details.<br>
+        <small style="color:var(--muted);margin-top:8px;display:block;">${err && err.message ? err.message : 'Unknown error'}</small>
+      </div>`;
+  });
 }
 
 function buildWrittenAnalysis({ real, wr, avgWin, avgLoss, ev, avgRR, grade, longs, shorts, longWR, shortWR, noSL, noTP, badRR, tpHits, slHits, exps, bestWS, worstLS, statL10, statP10, byStyle }) {
